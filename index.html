@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Effect Platform Test · Bella Li</title>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { height: 100%; margin: 0; background: #08080c; color: #fff; font-family: "Jost", system-ui, sans-serif; }
+  .gate { height: 100%; display: flex; align-items: center; justify-content: center; }
+  form { display: flex; flex-direction: column; align-items: center; gap: 14px; opacity: 0; animation: in .5s ease-out .15s forwards; }
+  @keyframes in { to { opacity: 1; } }
+  .k { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: rgba(255,255,255,.35); }
+  input { font: inherit; font-size: 16px; letter-spacing: .12em; text-align: center; width: 260px; padding: 12px 16px; color: #fff; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.16); border-radius: 999px; outline: none; transition: border-color .2s; }
+  input:focus { border-color: rgba(255,0,80,.7); }
+  form.bad input { border-color: #ff5c7a; animation: shake .3s; }
+  @keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  .m { font-size: 12px; color: rgba(255,255,255,.35); letter-spacing: .06em; min-height: 16px; }
+</style>
+</head>
+<body>
+<div class="gate"><form id="f" autocomplete="off"><div class="k">Effect Platform Test</div><input id="p" type="password" placeholder="password" autofocus /><div class="m" id="m"></div></form></div>
+<script>
+(async () => {
+  const encPath = "enc/index.json";
+  const f = document.getElementById("f"), inp = document.getElementById("p"), msg = document.getElementById("m");
+  const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  const data = await (await fetch(encPath + "?t=" + Date.now())).json();
+  async function keyFrom(pw) {
+    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+    return crypto.subtle.deriveKey({ name: "PBKDF2", salt: b64(data.salt), iterations: 150000, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, true, ["decrypt"]);
+  }
+  async function open(key) {
+    const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(data.iv) }, key, b64(data.ct));
+    const html = new TextDecoder().decode(pt);
+    document.open(); document.write(html); document.close();
+  }
+  if (location.search.includes("logout")) localStorage.removeItem("tt-k");
+  const saved = localStorage.getItem("tt-k");
+  if (saved) { try { const key = await crypto.subtle.importKey("raw", b64(saved), { name: "AES-GCM" }, true, ["decrypt"]); await open(key); return; } catch (e) { localStorage.removeItem("tt-k"); } }
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault(); msg.textContent = "…";
+    try {
+      const key = await keyFrom(inp.value);
+      const raw = new Uint8Array(await crypto.subtle.exportKey("raw", key));
+      await open(key);
+      localStorage.setItem("tt-k", btoa(String.fromCharCode(...raw)));
+    } catch (err) { f.classList.remove("bad"); void f.offsetWidth; f.classList.add("bad"); msg.textContent = "try again"; inp.select(); }
+  });
+})();
+</script>
+</body>
+</html>
