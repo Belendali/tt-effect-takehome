@@ -359,17 +359,12 @@
   .lb img { max-width: 94vw; max-height: 92vh; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.6); display: block; }
   .lb .close { position: absolute; top: 18px; right: 22px; font-family: var(--serif); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.6); }
   @keyframes lbin { from { opacity: 0; } to { opacity: 1; } }
-  /* step 03 reads as one slab */
-  section.blk#s3 { position: relative; margin: 140px 0 0; padding: 96px 0 80px; }
-  section.blk#s3::before { content: ""; position: absolute; left: 50%; transform: translateX(-50%); width: 100vw; top: 0; bottom: 0; z-index: 0; pointer-events: none;
-    background: linear-gradient(180deg, rgba(0,242,234,.10) 0%, rgba(0,242,234,.06) 45%, rgba(0,242,234,.03) 100%);
-    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%);
-    mask-image: linear-gradient(180deg, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%); }
-  section.blk#s3 > * { position: relative; z-index: 1; }
-  #s3 .beat { border-top-color: rgba(255,255,255,.09); }
-  #s3 .beat:first-of-type { border-top: 0; padding-top: 10px; margin-top: 26px; }
-  #s3 .chips { margin-top: 38px !important; }
-  @media (max-width: 900px) { section.blk#s3 { margin: 90px 0 0; padding: 64px 0 56px; } }
+  /* the four steps read as one run: dashed line between them */
+  #s3 .beat { border-top: 1px dashed rgba(255,255,255,.16); position: relative; }
+  #s3 .beat:first-of-type { border-top: 0; }
+  #s3 .bn { position: relative; }
+  #s3 .bn::before { content: ""; position: absolute; left: -24px; top: -46px; height: 34px; border-left: 1px dashed rgba(255,255,255,.22); }
+  #s3 .beat:first-of-type .bn::before { display: none; }
 </style>
 </head>
 <body>
