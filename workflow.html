@@ -332,6 +332,16 @@
   .evrow { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; max-width: 760px; align-items: start; }
   .evrow .ev { margin-top: 0; max-width: none; }
   @media (max-width: 900px) { .evrow { grid-template-columns: 1fr; } }
+  .bul { margin: 0; padding-left: 18px; max-width: 760px; }
+  .bul li { font-size: 14.5px; line-height: 1.65; color: var(--dim); margin-bottom: 6px; }
+  .bul li em { font-style: normal; color: var(--ink); font-family: var(--serif); }
+  .frames { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; max-width: 760px; align-items: start; }
+  .frames.one { grid-template-columns: 1fr; max-width: 420px; }
+  .frames .ev { margin-top: 0; }
+  .frames .fr > b { display: block; margin-top: 10px; font-family: var(--serif); font-weight: 500; font-size: 14px; }
+  .frames .evl { margin-top: 6px; gap: 10px; }
+  .frames .evl a { font-size: 10px; }
+  @media (max-width: 900px) { .frames { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -489,80 +499,91 @@
 
     <section class="blk flow" id="s3">
       <div class="sl amber">Step 03</div>
-      <h2>Workflow: one loop, three runs.</h2>
-      <p class="lede" style="margin-top:14px;max-width:760px">Each tab follows its own run, from idea to ship.</p>
+      <h2>Workflow: one loop, two runs.</h2>
+      <p class="lede" style="margin-top:14px;max-width:760px">Same four steps both times. The 2D games share one engine; the 3D one runs the same loop with models.</p>
       <div class="tabs" role="tablist">
-        <button class="tab on" data-tab="wink" role="tab">2D · Wink Wink &amp; Nod the Beat</button>
-        <button class="tab" data-tab="voice" role="tab">2D · Ah! Jump</button>
-        <button class="tab" data-tab="salon" role="tab">3D · Panic Salon</button>
+        <button class="tab on" data-tab="2d" role="tab">2D · Wink Wink, Nod the Beat, Ah! Jump</button>
+        <button class="tab" data-tab="3d" role="tab">3D · Panic Salon</button>
       </div>
 
-      <div class="tp on" data-panel="wink">
+      <div class="tp on" data-panel="2d">
         <div class="beat"><div class="bn"><i>01</i><b>Idea → greybox → playability</b></div><div class="bb">
-          <p class="body">Wink Wink came first: describe the loop to Claude Code in plain words and get a rough version with real blink detection and two lanes. Play it until the input feels right. Then ask the same question about a second game with a different input, and check that it plays before building anything else.</p>
+          <ul class="bul">
+            <li>Describe the loop to Claude Code in plain words, get a rough version with real tracking and no art.</li>
+            <li>Play it until the input feels right, then reuse the engine for the next game with a new input and theme.</li>
+            <li>Ah! Jump started the same way: voice instead of eyes, a rope instead of lanes.</li>
+          </ul>
           <div class="evrow">
-            <div><div class="ev q"><p>“A rhythm game for the left and right eye. Close an eye to hit the beat on that side. Both eyes for the drop. Build a rough version I can play.”</p><small>The first brief to Claude Code, from chat.</small></div>
+            <div><div class="ev q"><p>“A rhythm game for the left and right eye. Close an eye to hit the beat on that side. Both eyes for the drop. Build a rough version I can play.”</p><small>Wink Wink, the first brief.</small></div>
             <div class="evl"><a href="https://belendali.github.io/wink-wink/v1-greybox/" target="_blank">Greybox, kept online ↗</a></div></div>
-            <div><div class="ev q"><p>“Same idea, new input: tilt left, tilt right, nod for the drop. Put it in a DJ booth. Check that it still plays.”</p><small>Once Wink Wink felt right.</small></div>
+            <div><div class="ev q"><p>“Same idea, new input: tilt left, tilt right, nod for the drop. Put it in a DJ booth. Check that it still plays.”</p><small>Nod the Beat, once Wink Wink felt right.</small></div>
             <div class="evl"><a href="https://belendali.github.io/wink-dj/head/greybox/" target="_blank">Greybox, kept online ↗</a></div></div>
           </div>
         </div></div>
+
         <div class="beat"><div class="bn"><i>02</i><b>Art and audio</b></div><div class="bb">
-          <p class="body">One reference image in, and Codex drew the rest: for Wink Wink the pedestrians, each in a plain and a swept-off-their-feet state; for Nod the Beat the booth, the hands, the club-goers and the stickers.</p>
-          <p class="body note">Sound starts in code. The groove, the hit riff and the crowd are written with WebAudio, which is quick to tune while the loop is still moving. When a playtest says a cue is not landing, it gets replaced with a free-for-commercial-use effect or track.</p>
+          <ul class="bul">
+            <li>One reference image in, and Codex draws the rest: pedestrians in two states, the booth, the hands, the crowd, the stickers.</li>
+            <li>Ah! Jump needed three bodies, a court, and hair split into a still cap and swinging parts on one shared frame.</li>
+            <li>Sound starts in code — the groove, the hit riff and the crowd are WebAudio, quick to tune while the loop still moves.</li>
+            <li>When a playtest says a cue is not landing, swap in a free-for-commercial-use effect or track.</li>
+          </ul>
           <div class="ev"><img src="assets/flow/2d-wink-assets.jpg" alt="Wink Wink pedestrians, two states each" /></div>
           <div class="ev"><img src="assets/flow/2d-assets.jpg" alt="Nod the Beat asset sheet" /></div>
         </div></div>
+
         <div class="beat"><div class="bn"><i>03</i><b>Integrate, spec, iterate</b></div><div class="bb">
-          <p class="body">Assets wired in, every interactive element lined up with the TikTok core zone, real-look frames in Figma. Judge windows tuned after play tests. Blink became head tilt as a second input on the same chart.</p>
-          <div class="ev"><img src="assets/flow/2d-figma.jpg" alt="Real-look frames in Figma" /></div>
-          <div class="ev small"><img src="assets/flow/2d-iterate.jpg" alt="Nod the Beat guide" /></div>
-          <div class="evl"><a href="https://belendali.github.io/wink-wink/?zones" target="_blank">Wink Wink safe zones ↗</a><a href="https://belendali.github.io/wink-dj/head/?zones" target="_blank">Nod the Beat safe zones ↗</a></div>
+          <ul class="bul">
+            <li>Claude Code wires the assets in and reads the TikTok Effect spec from Figma, lining every interactive element up with the core zone.</li>
+            <li>Assets flow back into Figma for real-look frames, so the spec and the build stay in step.</li>
+            <li>Judge windows widened after play tests; blink became head tilt as a second input on the same chart.</li>
+            <li>Every game keeps a <em>?zones</em> overlay, so the safe zones can be checked inside the running game.</li>
+          </ul>
+          <div class="frames"><div class="fr"><div class="ev"><img src="assets/flow/tt-wink.jpg" alt="Wink Wink in the TikTok Effect frame" /></div><b>Wink Wink</b><div class="evl"><a href="https://www.figma.com/design/QUBLPsojgC8Vom9a3KD2R9/TikTok-Effect-Game--Bella-Li-09152026?node-id=295626-2910&amp;t=obTdrpBNiDewiyfc-4" target="_blank">Figma ↗</a><a href="https://belendali.github.io/wink-wink/?zones" target="_blank">Safe zones ↗</a></div></div><div class="fr"><div class="ev"><img src="assets/flow/tt-dj.jpg" alt="Nod the Beat in the TikTok Effect frame" /></div><b>Nod the Beat</b><div class="evl"><a href="https://www.figma.com/design/QUBLPsojgC8Vom9a3KD2R9/TikTok-Effect-Game--Bella-Li-09152026?node-id=295639-28463&amp;t=obTdrpBNiDewiyfc-4" target="_blank">Figma ↗</a><a href="https://belendali.github.io/wink-dj/head/?zones" target="_blank">Safe zones ↗</a></div></div><div class="fr"><div class="ev"><img src="assets/flow/tt-jump.jpg" alt="Ah! Jump in the TikTok Effect frame" /></div><b>Ah! Jump</b><div class="evl"><a href="https://www.figma.com/design/QUBLPsojgC8Vom9a3KD2R9/TikTok-Effect-Game--Bella-Li-09152026?node-id=295651-38793&amp;t=obTdrpBNiDewiyfc-4" target="_blank">Figma ↗</a><a href="https://belendali.github.io/ah-and-jump/?zones" target="_blank">Safe zones ↗</a></div></div></div>
         </div></div>
+
         <div class="beat"><div class="bn"><i>04</i><b>Ship</b></div><div class="bb">
-          <p class="body">One public link per game, each with an asset library: files, rules and a kit to download.</p>
+          <ul class="bul">
+            <li>One public link per game, each with its own asset library: files, rules and a kit to download.</li>
+            <li>The QR code always opens the latest build — no new link to hand out.</li>
+          </ul>
           <div class="ev"><img src="assets/flow/2d-library.jpg" alt="Nod the Beat asset library" /></div>
-          <div class="evl"><a href="https://belendali.github.io/wink-wink/asset-library/" target="_blank">Wink Wink assets ↗</a><a href="https://belendali.github.io/wink-dj/asset-library/" target="_blank">Nod the Beat assets ↗</a></div>
+          <div class="evl"><a href="https://belendali.github.io/wink-wink/asset-library/" target="_blank">Wink Wink assets ↗</a><a href="https://belendali.github.io/wink-dj/asset-library/" target="_blank">Nod the Beat assets ↗</a><a href="https://belendali.github.io/ah-and-jump/asset-library/" target="_blank">Ah! Jump assets ↗</a></div>
         </div></div>
       </div>
 
-      <div class="tp" data-panel="voice">
+      <div class="tp" data-panel="3d">
         <div class="beat"><div class="bn"><i>01</i><b>Idea → greybox → playability</b></div><div class="bb">
-          <p class="body">Say “ah” to jump. The mic listens for a short sound above the room's own noise, with no speech recognition. The selfie becomes the jumper's face. Tap practice for anyone without a mic.</p>
-          <div class="slot"><div><b>Image to add</b>assets/flow/voice-greybox.jpg</div></div>
-        </div></div>
-        <div class="beat"><div class="bn"><i>02</i><b>Art and audio</b></div><div class="bb">
-          <p class="body">Three bodies, a court, and hair split into a still cap and swinging parts on one shared frame. The line-art guide is hand-drawn. Win and lose stingers.</p>
-          <div class="slot"><div><b>Image to add</b>assets/flow/voice-assets.jpg</div></div>
-        </div></div>
-        <div class="beat"><div class="bn"><i>03</i><b>Integrate, spec, iterate</b></div><div class="bb">
-          <p class="body">The rope swings back to front. Say “ah” to start a 3-2-1. The result is Congrats or You lose with a Replay button, no popup. The jumper sits inside the core zone.</p>
-          <div class="slot"><div><b>Image to add</b>assets/flow/voice-figma.jpg</div></div>
-          <div class="evl"><a href="https://belendali.github.io/ah-and-jump/?zones" target="_blank">Safe zones ↗</a></div>
-        </div></div>
-        <div class="beat"><div class="bn"><i>04</i><b>Ship</b></div><div class="bb">
-          <p class="body">Public link and an asset library with every hair piece, the guide animation and the flow.</p>
-          <div class="slot"><div><b>Image to add</b>assets/flow/voice-library.jpg</div></div>
-          <div class="evl"><a href="https://belendali.github.io/ah-and-jump/asset-library/" target="_blank">Asset library ↗</a><a href="https://github.com/Belendali/ah-and-jump" target="_blank">Source ↗</a></div>
-        </div></div>
-      </div>
-
-      <div class="tp" data-panel="salon">
-        <div class="beat"><div class="bn"><i>01</i><b>Idea → greybox → playability</b></div><div class="bb">
-          <p class="body">Codex started from the Salon Panic concept: one chair, one client, face triggers. The first pass had blocks and a sneeze timer, no models.</p>
+          <ul class="bul">
+            <li>Codex started from the Salon Panic concept: one chair, one client, face triggers.</li>
+            <li>The first pass had blocks and a sneeze timer, no models.</li>
+          </ul>
           <div class="ev q"><p>“Pluck greys, trim bangs, plant hair. Tap on the beat, lift before the sneeze. Every slip becomes a hairstyle. The client stays polite.”</p><small>The concept line from Step 01.</small></div>
         </div></div>
+
         <div class="beat"><div class="bn"><i>02</i><b>Art and audio</b></div><div class="bb">
-          <p class="body">Three views first, then the models, then rounds of fixes on proportions and rigs. Blender for the last mile. Voices recorded, music from free libraries.</p>
+          <ul class="bul">
+            <li>Three views first, then the models, then rounds of fixes on proportions and rigs.</li>
+            <li>Blender for the last mile — model fixes went through it, not through prompts.</li>
+            <li>Voices recorded, music from free libraries, the small cues synthesised in code.</li>
+          </ul>
           <div class="ev"><img src="assets/flow/3d-assets.jpg" alt="Panic Salon characters" /></div>
         </div></div>
+
         <div class="beat"><div class="bn"><i>03</i><b>Integrate, spec, iterate</b></div><div class="bb">
-          <p class="body">The client scene sits inside the core zone. A 3-2-1 with an empty chair, then the doorbell and the first client walks in. Sneeze timing softened after friends kept getting caught.</p>
-          <div class="ev"><img src="assets/flow/3d-spec.jpg" alt="TikTok Effect safe-zone spec" /></div>
-          <div class="evl"><a href="https://belendali.github.io/hair-salon/?zones" target="_blank">Safe zones ↗</a></div>
+          <ul class="bul">
+            <li>The client scene sits inside the core zone, lifted so head and hair stay clear of TikTok's UI.</li>
+            <li>A 3-2-1 with an empty chair, then the doorbell and the first client walks in.</li>
+            <li>Sneeze timing softened after friends kept getting caught.</li>
+          </ul>
+          <div class="frames one"><div class="fr"><div class="ev"><img src="assets/flow/tt-salon.jpg" alt="Panic Salon in the TikTok Effect frame" /></div><b>Panic Salon</b><div class="evl"><a href="https://www.figma.com/design/QUBLPsojgC8Vom9a3KD2R9/TikTok-Effect-Game--Bella-Li-09152026?node-id=295656-48596&amp;t=obTdrpBNiDewiyfc-4" target="_blank">Figma ↗</a><a href="https://belendali.github.io/hair-salon/?zones" target="_blank">Safe zones ↗</a></div></div></div>
         </div></div>
+
         <div class="beat"><div class="bn"><i>04</i><b>Ship</b></div><div class="bb">
-          <p class="body">The asset library carries the Blender rigs, textures, props and the original audio, plus a handoff note.</p>
+          <ul class="bul">
+            <li>The asset library carries the Blender rigs, textures, props and the original audio.</li>
+            <li>A handoff note explains what is procedural and what can be swapped.</li>
+          </ul>
           <div class="ev"><img src="assets/flow/3d-library.jpg" alt="Panic Salon asset library" /></div>
           <div class="evl"><a href="https://belendali.github.io/hair-salon/asset-library/" target="_blank">Asset library ↗</a><a href="https://github.com/Belendali/hair-salon" target="_blank">Source ↗</a></div>
         </div></div>
