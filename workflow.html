@@ -619,17 +619,35 @@
 
     <section class="blk" id="s4">
       <div class="sl">Step 04</div>
-      <h2>Notes: what happened, what I'd change.</h2>
-      <div class="two"><div class="why lbl">Retrospective</div><div>
-      <p class="body">Placeholder. The process in short, what the AI loop saved, where taste had to be mine, and what I'd do differently.</p>
-      </div></div>
-      <div class="why" style="margin-top:44px">Tools</div>
+      <h2>Notes: what carries over.</h2>
+      <p class="lede" style="margin-top:14px;max-width:760px">Five days, four games. The rules worth keeping, who did what, and what it would take for someone else to run this.</p>
+
+      <div class="why">Rules worth keeping</div>
+      <ul class="bul">
+        <li><em>Play before you draw.</em> Every game started as a greybox with real tracking and no art. The art began only once the input felt right.</li>
+        <li><em>Re-skinning beats inventing.</em> Nod the Beat reused Wink Wink's engine with a new input and a new theme, which paid for a third game.</li>
+        <li><em>Tune detection on a real phone.</em> Judge windows, quick-flick triggers and re-arm thresholds all moved after play tests, never from numbers alone.</li>
+        <li><em>Read the spec at the start.</em> The safe zones went in while building, and every game keeps a <em>?zones</em> overlay so it can check itself.</li>
+        <li><em>One link, forever.</em> The QR code never changes; every scan opens the current build.</li>
+      </ul>
+
+      <div class="why" style="margin-top:44px">Who did what</div>
       <div class="deliver">
         <a href="#s3"><i>Build · previews</i><b>Claude Code</b><span>Greybox, game logic, integration, spec alignment, asset libraries.</span></a>
-        <a href="#s3"><i>Art · models</i><b>Codex</b><span>2D sprites from a reference, 3D characters from three views.</span></a>
+        <a href="#s3"><i>Art · models</i><b>Codex</b><span>2D sprites from one reference, 3D characters from three views.</span></a>
+        <a href="#s3"><i>Models</i><b>Blender</b><span>The last mile on rigs and proportions, where prompts stopped helping.</span></a>
         <a href="#s3"><i>Spec</i><b>Figma</b><span>Safe-zone spec in, real-look frames and assets out.</span></a>
-        <a href="#s3"><i>Tracking · sound</i><b>MediaPipe · WebAudio</b><span>Face tracking in the browser. Synthesized music and cues.</span></a>
+        <a href="#s2"><i>Tracking · sound</i><b>MediaPipe · WebAudio</b><span>Face and voice in the browser, music and cues written in code.</span></a>
+        <a href="#s1"><i>Direction</i><b>Me</b><span>Choosing what to build, judging how it feels, cutting what is not fun.</span></a>
       </div>
+
+      <div class="why" style="margin-top:44px">Next: make it remixable</div>
+      <ul class="bul">
+        <li><em>A re-skin checklist.</em> Which files and which constants to touch for a new theme: colours, character art, judge windows, round length.</li>
+        <li><em>One config block per game.</em> BPM, windows, duration and detection thresholds in a single place, so pace and difficulty are numbers rather than code edits.</li>
+        <li><em>A starter from the greybox.</em> Tracking, judging and a result screen already wired, so the next game starts at step three.</li>
+      </ul>
+      <p class="body note" style="margin-top:14px">These three are the next step, not something shipped this week. The skill built so far is the idea judge; asset style and the safe-zone check are still to come.</p>
     </section>
 
   </div>
