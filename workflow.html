@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="style.css" />
 <style>
   :root { --accent: var(--eh-red); --cyan: var(--eh-cyan); }
-  html, body { height: auto; overflow: visible; }
+  html, body { height: auto; overflow: visible; overflow-x: clip; }
   .hero { position: relative; }
   .herobg { position: absolute; left: 0; right: 0; top: 0; width: 100%; height: clamp(440px, 33.33vw, 620px); z-index: 0; overflow: hidden; }
   .herobg img { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; display: block; opacity: .28; filter: saturate(.85) contrast(1.02); }
@@ -361,15 +361,15 @@
   @keyframes lbin { from { opacity: 0; } to { opacity: 1; } }
   /* step 03 reads as one slab */
   section.blk#s3 { position: relative; margin: 140px 0 0; padding: 96px 0 80px; }
-  section.blk#s3::before { content: ""; position: absolute; left: -40px; right: -40px; top: 0; bottom: 0; z-index: 0; pointer-events: none;
-    background: linear-gradient(180deg, rgba(255,0,80,.085) 0%, rgba(255,0,80,.05) 38%, rgba(0,242,234,.05) 100%);
+  section.blk#s3::before { content: ""; position: absolute; left: 50%; transform: translateX(-50%); width: 100vw; top: 0; bottom: 0; z-index: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,242,234,.10) 0%, rgba(0,242,234,.06) 45%, rgba(0,242,234,.03) 100%);
     -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%);
     mask-image: linear-gradient(180deg, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%); }
   section.blk#s3 > * { position: relative; z-index: 1; }
   #s3 .beat { border-top-color: rgba(255,255,255,.09); }
   #s3 .beat:first-of-type { border-top: 0; padding-top: 10px; margin-top: 26px; }
   #s3 .chips { margin-top: 38px !important; }
-  @media (max-width: 900px) { section.blk#s3 { margin: 90px 0 0; padding: 64px 0 56px; } section.blk#s3::before { left: -16px; right: -16px; } }
+  @media (max-width: 900px) { section.blk#s3 { margin: 90px 0 0; padding: 64px 0 56px; } }
 </style>
 </head>
 <body>
