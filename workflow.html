@@ -788,7 +788,7 @@
       }
       setTimeout(() => { host.innerHTML = ''; busy = false; }, 3600);
     }
-    new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) burst(); }, { threshold: 0.3 }).observe(closing);
+    new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) burst(); }, { threshold: 0, rootMargin: '0px 0px -12% 0px' }).observe(closing);
   })();
 </script>
 </body>
