@@ -352,6 +352,13 @@
   .wgimg img { transition: transform .5s cubic-bezier(.22,1,.36,1), opacity .9s ease; }
   .wg:hover .wgimg img { transform: scale(1.05); }
   .dmc img, .trm img.cover { transition: transform .5s cubic-bezier(.22,1,.36,1); }
+  /* click any picture to see it big */
+  .ev:not(.q) img, .wgimg img { cursor: zoom-in; }
+  .lb { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 28px; background: rgba(5,5,8,.93); backdrop-filter: blur(6px); cursor: zoom-out; animation: lbin .18s ease both; }
+  .lb[hidden] { display: none; }
+  .lb img { max-width: 94vw; max-height: 92vh; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.6); display: block; }
+  .lb .close { position: absolute; top: 18px; right: 22px; font-family: var(--serif); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+  @keyframes lbin { from { opacity: 0; } to { opacity: 1; } }
 </style>
 </head>
 <body>
@@ -616,6 +623,7 @@
     </section>
 
   </div>
+  <div class="lb" id="lb" hidden><span class="close">Click to close</span><img id="lbimg" alt="" /></div>
 <script>
   (function () {
     const links = [...document.querySelectorAll('#sidenav a')];
@@ -643,6 +651,17 @@
   })();
   (function () {
     document.querySelectorAll('.dir').forEach(d => d.addEventListener('click', () => { if (matchMedia('(hover: none)').matches) d.classList.toggle('open'); }));
+  })();
+  (function () {
+    const lb = document.getElementById('lb'), lbimg = document.getElementById('lbimg');
+    function open(src, alt) { lbimg.src = src; lbimg.alt = alt || ''; lb.hidden = false; document.body.style.overflow = 'hidden'; }
+    function close() { lb.hidden = true; lbimg.removeAttribute('src'); document.body.style.overflow = ''; }
+    document.addEventListener('click', (e) => {
+      const img = e.target.closest('.ev:not(.q) img, .wgimg img');
+      if (img) { e.preventDefault(); open(img.currentSrc || img.src, img.alt); return; }
+      if (!lb.hidden) close();
+    });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && !lb.hidden) close(); });
   })();
 </script>
 </body>
