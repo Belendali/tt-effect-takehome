@@ -387,6 +387,21 @@
   .next2 .body.note { margin-top: 10px; font-size: 12.5px; }
   @media (max-width: 900px) { .rules5 { grid-template-columns: 1fr 1fr; } .next2 { grid-template-columns: 1fr; } }
   .bul li b { font-weight: 600; color: var(--accent); }
+  /* phone: keep every block inside the screen */
+  @media (max-width: 900px) {
+    .dirs { grid-template-columns: 1fr; }
+    .dir { width: 100%; }
+    .topfade { max-width: 100%; }
+    img { max-width: 100%; }
+    .rules5 { grid-template-columns: 1fr 1fr; }
+    .frames, .frames.libs { grid-template-columns: 1fr 1fr; margin-left: 0; max-width: 100%; }
+    .frames.one { grid-template-columns: 1fr; }
+    .beat { grid-template-columns: 1fr; gap: 16px; }
+    #s3 .bn::before { display: none; }
+    .evrow { grid-template-columns: 1fr; }
+    .ev, .ev.small, .bul, .blk p.body, .lede { max-width: 100%; }
+    .lb { padding: 14px; }
+  }
 </style>
 </head>
 <body>

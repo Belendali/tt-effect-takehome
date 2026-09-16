@@ -146,6 +146,18 @@
   .page.focusing .game.focus::before { opacity: 1; }
   @media (max-width: 900px) { .page.focusing .game { transform: none; opacity: .5; } .page.focusing .game.focus { transform: none; opacity: 1; } }
   @media (prefers-reduced-motion: reduce) { .page.focusing .game, .page.focusing .game.focus { transform: none; transition: opacity .2s ease; } }
+  /* phone: nothing wider than the screen */
+  @media (max-width: 900px) {
+    html, body { overflow-x: clip; }
+    .page { width: calc(100% - 32px); overflow-x: clip; }
+    .game, .gtop, .gbottom, .ginfo, .left { max-width: 100%; min-width: 0; }
+    img, video { max-width: 100%; height: auto; }
+    .gwide { width: 100%; max-width: 100%; }
+    .glinks { flex-direction: row; flex-wrap: wrap; }
+    .phone { width: 210px; }
+    .ginfo h2 { font-size: 30px; }
+    #lb { padding: 14px; }
+  }
 </style>
 </head>
 <body>
