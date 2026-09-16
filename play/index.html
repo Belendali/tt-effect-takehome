@@ -5,50 +5,372 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
 <title>Play · Effect Platform Test</title>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../style.css" />
 <style>
-  html, body { height: 100%; margin: 0; background: #08080c; color: #fff; font-family: "Jost", system-ui, sans-serif; }
-  .gate { height: 100%; display: flex; align-items: center; justify-content: center; }
-  form { display: flex; flex-direction: column; align-items: center; gap: 14px; opacity: 0; animation: in .5s ease-out .15s forwards; }
-  @keyframes in { to { opacity: 1; } }
-  .k { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: rgba(255,255,255,.35); }
-  input { font: inherit; font-size: 16px; letter-spacing: .12em; text-align: center; width: 260px; padding: 12px 16px; color: #fff; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.16); border-radius: 999px; outline: none; transition: border-color .2s; }
-  input:focus { border-color: rgba(255,0,80,.7); }
-  form.bad input { border-color: #ff5c7a; animation: shake .3s; }
-  @keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
-  .m { font-size: 12px; color: rgba(255,255,255,.35); letter-spacing: .06em; min-height: 16px; }
+  :root { --accent: var(--eh-red); }
+  html, body { height: auto; overflow: visible; }
+  .page { width: min(1120px, calc(100% - 128px)); margin: 0 auto; padding: 72px 0 140px; position: relative; z-index: 2; }
+  .page .rv { opacity: 1; transform: none; }
+  .back { font-family: var(--serif); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--faint); text-decoration: none; }
+  .back:hover { color: var(--ink); }
+  h1 { margin-top: 26px; }
+  h1 span { color: var(--accent); }
+  .lede { max-width: 640px; }
+  .toc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+  .toc a { font-family: var(--serif); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); text-decoration: none; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; padding: 8px 14px; transition: all .2s ease; }
+  .toc a:hover { color: var(--ink); border-color: rgba(255,255,255,.45); }
+  .toc a i { font-style: normal; color: var(--faint); margin-right: 8px; }
+
+  /* one game = one section */
+  .game { position: relative; isolation: isolate; margin: 0; padding: 72px 0; border-top: 1px solid var(--line); transform-origin: center center; transition: opacity .6s ease, transform .8s cubic-bezier(.22,1,.36,1); }
+  .game:first-of-type { margin-top: 48px; }
+  .gtop { display: flex; align-items: center; justify-content: center; gap: 56px; }
+  .gtop > .left { flex: 0 0 210px; }
+  .gtop > .ginfo { flex: 0 1 800px; min-width: 0; }
+  .game.flip .gtop { flex-direction: row-reverse; }
+  .phone { position: relative; width: 200px; aspect-ratio: 390 / 844; border-radius: 34px; background: #000; border: 1px solid rgba(255,255,255,.18); box-shadow: 0 30px 70px rgba(0,0,0,.6), inset 0 0 0 6px #000; overflow: hidden; margin: 0 auto; }
+  .phone::before { content: ""; position: absolute; top: 10px; left: 50%; width: 70px; height: 21px; transform: translateX(-50%); border-radius: 14px; background: #000; z-index: 5; }
+  .phone video, .phone img.poster { position: absolute; inset: 6px; width: calc(100% - 12px); height: calc(100% - 12px); object-fit: cover; border-radius: 34px; display: block; background: #0b0b10; }
+  .phone .rec { position: absolute; left: 12px; right: 12px; bottom: 14px; z-index: 6; text-align: center; font-family: var(--serif); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+  .phone .rec b { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--eh-red); margin-right: 8px; vertical-align: 1px; animation: blink 1.4s ease-in-out infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+  .phone.empty .rec { display: none; }
+  .phone .drop { position: absolute; left: 18px; right: 18px; bottom: 40px; display: none; align-items: center; justify-content: center; text-align: center; padding: 10px 12px; font-family: var(--serif); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.7); line-height: 1.7; background: rgba(0,0,0,.6); border: 1px dashed rgba(255,255,255,.25); border-radius: 12px; z-index: 6; }
+  .phone.empty .drop { display: flex; }
+
+  .ginfo { position: relative; padding-top: 0; }
+  .ginfo h2 .no { display: inline-block; font-style: normal; font-size: 22px; letter-spacing: .06em; color: var(--accent); margin-right: 14px; vertical-align: 6px; transition: transform .3s cubic-bezier(.22,1,.36,1); }
+  .ginfo h2 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 38px; letter-spacing: -.02em; line-height: 1.05; }
+  .ginfo h2 span { display: block; font-size: 17px; color: var(--dim); margin-top: 6px; letter-spacing: 0; }
+  .ginfo .how { margin: 22px 0 0; font-size: 15px; line-height: 1.75; color: var(--dim); }
+  .ginfo .how + .how { margin-top: 12px; }
+  .ginfo .how.note { margin-top: 12px; font-size: 13.5px; color: var(--faint); border-left: 2px solid rgba(255,255,255,.18); padding-left: 14px; }
+  .ginfo .how.note em { color: var(--dim); }
+  .pts { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 6px; }
+  .pts li { font-size: 14px; line-height: 1.55; color: var(--dim); padding-left: 18px; position: relative; }
+  .pts li::before { content: ""; position: absolute; left: 0; top: 10px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .pts li b { display: inline; font-weight: 600; color: var(--ink); margin-right: 6px; }
+  .pts li b::after { content: ":"; }
+
+  .ginfo .how em { font-style: normal; color: var(--ink); }
+  .left { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .qr { width: 96px; text-decoration: none; text-align: center; }
+  .qr img { width: 96px; height: 96px; display: block; border-radius: 12px; background: #fff; padding: 6px; box-shadow: 0 16px 40px rgba(0,0,0,.45); image-rendering: pixelated; }
+  .qr span { display: block; margin-top: 8px; font-family: var(--serif); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--faint); }
+  .qr:hover span { color: var(--ink); }
+
+  .glinks { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 0; }
+  .glinks a { font-family: var(--serif); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink); text-decoration: none; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; padding: 8px 14px; background: #0c0c11; transition: all .2s ease; }
+  .glinks a:hover { border-color: rgba(255,255,255,.55); background: #13131a; }
+  .glinks a.main { border-color: rgba(255,0,80,.55); }
+  .glinks a.main:hover { background: rgba(255,0,80,.12); }
+
+
+  .gwide { position: relative; margin-top: 0; flex: 1 1 420px; max-width: 580px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: #0c0c11; aspect-ratio: 16 / 9; }
+  .gwide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .gwide.missing img { display: none; }
+  .gwide .drop { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; text-align: center; font-family: var(--serif); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--faint); line-height: 1.8; border: 1px dashed rgba(255,255,255,.18); border-radius: 20px; }
+  .gwide.missing .drop { display: flex; }
+
+  .stub .gtop { align-items: start; }
+  .stub .ginfo h2 { font-size: 34px; }
+  .soon { display: inline-block; margin-top: 16px; font-family: var(--serif); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: #ffb54a; border: 1px solid rgba(255,181,74,.45); border-radius: 999px; padding: 4px 10px; }
+  .gbottom { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 18px; margin-top: 20px; }
+  @media (max-width: 900px) { .gbottom { flex-direction: column; } .gwide { flex: none; width: 100%; max-width: none; } .glinks { flex-direction: row; flex-wrap: wrap; } .page { width: calc(100% - 48px); } .gtop, .game.flip .gtop { flex-direction: column; align-items: stretch; gap: 30px; } .gtop > .left { flex: none; } .phone { width: 236px; } .ginfo h2 { font-size: 36px; } }
+
+  /* motion: reveal on scroll, float, tilt, hover */
+  .game .left, .game .ginfo > * { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .9s cubic-bezier(.22,1,.36,1); }
+  .game.in .left, .game.in .ginfo > * { opacity: 1; transform: none; }
+  .game.in .ginfo > *:nth-child(1) { transition-delay: .08s; } .game.in .ginfo > *:nth-child(2) { transition-delay: .16s; } .game.in .ginfo > *:nth-child(3) { transition-delay: .24s; } .game.in .ginfo > *:nth-child(4) { transition-delay: .32s; } .game.in .ginfo > *:nth-child(5) { transition-delay: .4s; } .game.in .ginfo > *:nth-child(6) { transition-delay: .48s; }
+  .pts li { opacity: 0; transform: translateX(-10px); transition: opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1), color .2s ease; }
+  .game.in .pts li { opacity: 1; transform: none; }
+  .game.in .pts li:nth-child(1) { transition-delay: .35s; } .game.in .pts li:nth-child(2) { transition-delay: .45s; } .game.in .pts li:nth-child(3) { transition-delay: .55s; } .game.in .pts li:nth-child(4) { transition-delay: .65s; }
+  .pts li::before { transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s ease; }
+  .pts li:hover { color: var(--ink); }
+  .pts li:hover::before { transform: scale(1.6); box-shadow: 0 0 14px rgba(255,0,80,.7); }
+  .left { perspective: 1200px; }
+  .phone { transform-style: preserve-3d; will-change: transform; animation: float 6s ease-in-out infinite; transition: box-shadow .4s ease, border-color .4s ease; }
+  .phone.tilting { animation: none; }
+  .left:hover .phone { border-color: rgba(255,255,255,.34); box-shadow: 0 0 0 1px rgba(255,0,80,.22), 0 0 60px rgba(255,0,80,.18), 0 40px 90px rgba(0,0,0,.65), inset 0 0 0 6px #000; }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  @media (prefers-reduced-motion: reduce) { .phone { animation: none; } .game .left, .game .ginfo > *, .pts li { transition: none; opacity: 1; transform: none; } }
+  .qr { transition: transform .35s cubic-bezier(.22,1,.36,1); }
+  .qr img { transition: box-shadow .35s ease; }
+  .qr:hover { transform: translateY(-4px) scale(1.04); }
+  .qr:hover img { box-shadow: 0 0 0 1px rgba(255,0,80,.3), 0 0 40px rgba(255,0,80,.25), 0 20px 50px rgba(0,0,0,.5); }
+  .gwide { transition: border-color .4s ease, box-shadow .4s ease, transform .5s cubic-bezier(.22,1,.36,1); }
+  .gwide img { transition: transform 1.2s cubic-bezier(.22,1,.36,1); }
+  .gwide:hover { border-color: rgba(255,0,80,.5); box-shadow: 0 0 0 1px rgba(255,0,80,.2), 0 0 50px rgba(255,0,80,.18), 0 30px 70px rgba(0,0,0,.5); transform: translateY(-4px); }
+  .gwide:hover img { transform: scale(1.035); }
+  .gwide::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.08) 50%, transparent 65%); transform: translateX(-120%); transition: transform 1.1s ease; pointer-events: none; }
+  .gwide:hover::after { transform: translateX(120%); }
+  .glinks a { transition: transform .25s cubic-bezier(.22,1,.36,1), border-color .25s ease, background .25s ease, color .25s ease; }
+  .glinks a:hover { transform: translateY(-2px); }
+  .glinks a.main:hover { box-shadow: 0 0 24px rgba(255,0,80,.25); }
+  .ginfo h2 { transition: letter-spacing .5s ease; }
+  .game:hover .ginfo h2 .no { transform: translateX(3px); }
+  .toc a { transition: all .25s ease; }
+  .toc a:hover { transform: translateY(-2px); }
+  .toc a.cur { color: var(--ink); border-color: rgba(255,0,80,.6); background: rgba(255,0,80,.08); }
+  .toc a.cur i { color: var(--accent); }
+  .page > .eyebrow, .page > h1, .page > .lede, .toc { animation: rise .9s cubic-bezier(.22,1,.36,1) both; }
+  .page > h1 { animation-delay: .08s; } .page > .lede { animation-delay: .16s; } .toc { animation-delay: .24s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  .sidenav { position: fixed; left: 24px; top: 50%; transform: translateY(-50%); z-index: 50; display: flex; flex-direction: column; gap: 13px; }
+  .sidenav a { font-family: var(--serif); font-size: 14px; color: rgba(255,255,255,.34); text-decoration: none; letter-spacing: .01em; transition: color .2s ease, transform .2s ease; white-space: nowrap; }
+  .sidenav a:hover { color: rgba(255,255,255,.7); transform: translateX(2px); }
+  .sidenav a.cur { color: #fff; }
+  .sidenav a.top { color: rgba(255,255,255,.34); }
+  .sidenav .gap { height: 6px; }
+  @media (max-width: 1240px) { .sidenav { display: none; } }
+  @media (min-width: 1241px) { .toc { display: none; } }
+
+  /* lightbox: the recording, big and with sound */
+  .phone:not(.empty) { cursor: zoom-in; }
+  .lb { position: fixed; inset: 0; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: rgba(5,5,8,.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); cursor: zoom-out; opacity: 0; transition: opacity .3s ease; }
+  .lb.on { opacity: 1; }
+  .lb[hidden] { display: none; }
+  .lbphone { position: relative; height: min(84vh, 780px); aspect-ratio: 390 / 844; border-radius: 48px; background: #000; border: 1px solid rgba(255,255,255,.22); box-shadow: 0 40px 120px rgba(0,0,0,.7), 0 0 80px rgba(255,0,80,.14); overflow: hidden; transform-origin: center center; transition: transform .5s cubic-bezier(.22,1,.36,1); }
+  .lbphone video { position: absolute; inset: 8px; width: calc(100% - 16px); height: calc(100% - 16px); object-fit: cover; border-radius: 40px; background: #0b0b10; }
+  .lbhint { font-family: var(--serif); font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+  .lbhint b { color: var(--ink); font-weight: 500; }
+
+  /* 2 and 4: phone on the right, so the page zigzags */
+
+  /* focus: the section nearest the middle of the screen (or under the pointer) steps forward, the others step back */
+  .game::before { content: ""; position: absolute; inset: 18px -48px; z-index: -1; border-radius: 36px; pointer-events: none; background: radial-gradient(55% 65% at 50% 50%, rgba(255,0,80,.10), rgba(255,0,80,0) 72%); opacity: 0; transition: opacity .7s ease; }
+  .page.focusing .game { opacity: .38; transform: scale(.955); }
+  .page.focusing .game.focus { opacity: 1; transform: scale(1.02); }
+  .page.focusing .game.focus::before { opacity: 1; }
+  @media (max-width: 900px) { .page.focusing .game { transform: none; opacity: .5; } .page.focusing .game.focus { transform: none; opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .page.focusing .game, .page.focusing .game.focus { transform: none; transition: opacity .2s ease; } }
 </style>
 </head>
 <body>
-<div class="gate"><form id="f" autocomplete="off"><div class="k">Effect Platform Test</div><input id="p" type="password" placeholder="password" autofocus /><div class="m" id="m"></div></form></div>
+  <nav class="sidenav" id="sidenav">
+    <a href="#top" class="top">Play</a>
+    <div class="gap"></div>
+    <a href="#g1">01 Nod the Beat</a>
+    <a href="#g2">02 Wink Wink</a>
+    <a href="#g3">03 Ah! Jump</a>
+    <a href="#g4">04 Panic Salon</a>
+  </nav>
+  <div class="page" id="top">
+    <a class="back" href="../index.html">← Back</a>
+    <div class="eyebrow rv" style="margin-top:22px;color:var(--accent)">01 · Play the effects</div>
+    <h1 class="rv">Four games. <span>Four ways to play.</span></h1>
+    <p class="lede rv" style="margin-top:18px">Head, eyes, voice, and touch. Best on a phone: scan a code. On desktop, allow the camera and play in the window.</p>
+    <div class="toc">
+      <a href="#g1"><i>01</i>Nod the Beat</a><a href="#g2"><i>02</i>Wink Wink</a><a href="#g3"><i>03</i>Ah! Jump</a><a href="#g4"><i>04</i>Panic Salon</a>
+    </div>
+
+    <section class="game" id="g1">
+      <div class="gtop">
+        <div class="left">
+        <div class="phone" id="ph1">
+          <video src="../assets/play/nod-the-beat.mp4?v=1" poster="../assets/demos/head-dj.jpg" autoplay muted loop playsinline preload="metadata"></video>
+          <div class="drop">Screen recording<br />assets/play/nod-the-beat.mp4</div>
+          <div class="rec"><b></b>Tap for sound</div>
+        </div>
+        <a class="qr" href="https://belendali.github.io/wink-dj/head/" target="_blank" title="Scan to play"><img src="../assets/play/qr-nod-the-beat.svg" alt="QR code for Nod the Beat" /><span>Scan to play</span></a>
+        </div>
+        <div class="ginfo">
+          <h2><i class="no">01</i>Nod the Beat<span>Tilt, nod, and mix your own beat. Win the crowd in 15 seconds.</span></h2>
+          <ul class="pts">
+            <li><b>Play your own mix</b>Head movements trigger beats and playful “hey, yo!” sounds—even random moves feel musical.</li>
+            <li><b>Made for camera</b>Flying hair, funny faces, and DJ shades turn you into the show.</li>
+            <li><b>Win or fail, worth sharing</b>Look effortlessly cool—or hilariously offbeat.</li>
+          </ul>
+          <p class="how note"><em>Background music generated live through code.</em></p>
+          <div class="gbottom">
+          <div class="gwide" id="gw1">
+            <img src="../assets/play/nod-the-beat-wide.jpg?v=2" alt="Nod the Beat, from the guide to the result" onerror="this.parentNode.classList.add('missing')" />
+            <div class="drop">How it plays<br />assets/play/nod-the-beat-wide.jpg</div>
+          </div>
+          <div class="glinks">
+            <a class="main" href="https://belendali.github.io/wink-dj/head/" target="_blank">Demo ↗</a>
+            <a href="https://belendali.github.io/wink-dj/asset-library/" target="_blank">Assets ↗</a>
+            <a href="https://github.com/Belendali/wink-dj" target="_blank">GitHub ↗</a>
+            <a href="https://www.figma.com/design/QUBLPsojgC8Vom9a3KD2R9/TikTok-Effect-%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83?node-id=295639-28463&amp;t=obTdrpBNiDewiyfc-4" target="_blank">TT Effect Figma ↗</a>
+            <a href="https://belendali.github.io/wink-dj/" target="_blank">Blink version ↗</a>
+            <a href="https://belendali.github.io/wink-dj/head/?zones" target="_blank">Safe zones ↗</a>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="game flip" id="g2">
+      <div class="gtop">
+        <div class="left">
+        <div class="phone" id="ph2">
+          <video src="../assets/play/wink-wink.mp4?v=1" poster="../assets/demos/wink-wink.jpg" autoplay muted loop playsinline preload="metadata"></video>
+          <div class="drop">Screen recording<br />assets/play/wink-wink.mp4</div>
+          <div class="rec"><b></b>Tap for sound</div>
+        </div>
+        <a class="qr" href="https://belendali.github.io/wink-wink/" target="_blank" title="Scan to play"><img src="../assets/play/qr-wink-wink.svg" alt="QR code for Wink Wink" /><span>Scan to play</span></a>
+        </div>
+        <div class="ginfo">
+          <h2><i class="no">02</i>Wink Wink<span>Wink the matching eye as people reach the ring. See how many fall for you in 15 seconds.</span></h2>
+          <ul class="pts">
+            <li><b>Easy to play</b>A simple wink turns flirting into a game.</li>
+            <li><b>Made for camera</b>Cute winks and awkward faces make every round entertaining.</li>
+            <li><b>Satisfying reactions</b>Each successful wink sends someone tumbling into heart bubbles.</li>
+            <li><b>Built for friendly rivalry</b>Pass the phone and see who’s more irresistible.</li>
+          </ul>
+          <div class="gbottom">
+          <div class="gwide" id="gw2">
+            <img src="../assets/play/wink-wink-wide.jpg?v=2" alt="Wink Wink, from the guide to the result" onerror="this.parentNode.classList.add('missing')" />
+            <div class="drop">How it plays<br />assets/play/wink-wink-wide.jpg</div>
+          </div>
+          <div class="glinks">
+            <a class="main" href="https://belendali.github.io/wink-wink/" target="_blank">Demo ↗</a>
+            <a href="https://belendali.github.io/wink-wink/asset-library/" target="_blank">Assets ↗</a>
+            <a href="https://github.com/Belendali/wink-wink" target="_blank">GitHub ↗</a>
+            <a href="https://www.figma.com/design/QUBLPsojgC8Vom9a3KD2R9/TikTok-Effect-%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83?node-id=295626-2910&amp;t=obTdrpBNiDewiyfc-4" target="_blank">TT Effect Figma ↗</a>
+            <a href="https://belendali.github.io/wink-wink/v1-greybox/" target="_blank">Version 1 ↗</a>
+            <a href="https://belendali.github.io/wink-wink/?zones" target="_blank">Safe zones ↗</a>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="game" id="g3">
+      <div class="gtop">
+        <div class="left">
+        <div class="phone" id="ph3">
+          <video src="../assets/play/ah-and-jump.mp4?v=2" poster="../assets/demos/ah-and-jump.jpg" autoplay muted loop playsinline preload="metadata"></video>
+          <div class="drop">Screen recording<br />assets/play/ah-and-jump.mp4</div>
+          <div class="rec"><b></b>Tap for sound</div>
+        </div>
+        <a class="qr" href="https://belendali.github.io/ah-and-jump/" target="_blank" title="Scan to play"><img src="../assets/play/qr-ah-and-jump.svg" alt="QR code for Ah! Jump" /><span>Scan to play</span></a>
+        </div>
+        <div class="ginfo">
+          <h2><i class="no">03</i>Ah! Jump<span>Make a sound to jump the rope. Last 15 seconds to win—one trip and you’re out.</span></h2>
+          <ul class="pts">
+            <li><b>Any sound, your style</b>Squeak, bark, or make up a ridiculous noise. Every jump is a chance to get creative.</li>
+            <li><b>Your face, tiny body</b>Your selfie on the jumper makes every goofy expression part of the show.</li>
+            <li><b>Funny jumps, funnier falls</b>Wild moves and dramatic tumbles make even a failed round worth sharing.</li>
+            <li><b>Endless ways to film</b>Challenge friends to use silly sounds, take turns, or capture someone’s confused reaction in the background.</li>
+          </ul>
+          <div class="gbottom">
+          <div class="gwide" id="gw3">
+            <img src="../assets/play/ah-and-jump-wide.jpg?v=2" alt="Ah! Jump, from the guide to the result" onerror="this.parentNode.classList.add('missing')" />
+            <div class="drop">How it plays<br />assets/play/ah-and-jump-wide.jpg</div>
+          </div>
+          <div class="glinks">
+            <a class="main" href="https://belendali.github.io/ah-and-jump/" target="_blank">Demo ↗</a>
+            <a href="https://belendali.github.io/ah-and-jump/asset-library/" target="_blank">Assets ↗</a>
+            <a href="https://github.com/Belendali/ah-and-jump" target="_blank">GitHub ↗</a>
+            <a href="https://www.figma.com/design/QUBLPsojgC8Vom9a3KD2R9/TikTok-Effect-Game--Bella-Li-09152026?node-id=295651-38793&amp;t=obTdrpBNiDewiyfc-4" target="_blank">TT Effect Figma ↗</a>
+            <a href="https://belendali.github.io/ah-and-jump/?zones" target="_blank">Safe zones ↗</a>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="game flip" id="g4">
+      <div class="gtop">
+        <div class="left">
+        <div class="phone" id="ph4">
+          <video src="../assets/play/crazy-salon.mp4?v=1" poster="../assets/demos/panic-salon.jpg" autoplay muted loop playsinline preload="metadata"></video>
+          <div class="drop">Screen recording<br />assets/play/crazy-salon.mp4</div>
+          <div class="rec"><b></b>Tap for sound</div>
+        </div>
+        <a class="qr" href="https://belendali.github.io/hair-salon/" target="_blank" title="Scan to play"><img src="../assets/play/qr-crazy-salon.svg" alt="QR code for Panic Salon" /><span>Scan to play</span></a>
+        </div>
+        <div class="ginfo">
+          <h2><i class="no">04</i>Panic Salon<span>Pluck gray hairs, trim bangs, and restore hair. Find out if you’re a star stylist—or a salon disaster.</span></h2>
+          <ul class="pts">
+            <li><b>Three tasks, three skills</b>Grab the right hair, cut an even fringe, and inject just the right dose of growth serum.</li>
+            <li><b>Rookie mistakes, big laughs</b>One wrong pluck or crooked cut turns a simple service into a hilarious mess.</li>
+            <li><b>Customers with character</b>Dramatic reactions make every makeover—and mishap—worth watching.</li>
+            <li><b>Take turns, share the chaos</b>Pass the phone between clients. Run the salon together or compete to be the best stylist.</li>
+          </ul>
+          <p class="how note"><em>An experiment in 3D gameplay:</em> Built to test whether ASM could power a complete, self-looping game. Panic Salon demonstrates three distinct interactions within one playable loop.</p>
+          <div class="gbottom">
+          <div class="gwide" id="gw4">
+            <img src="../assets/play/crazy-salon-wide.jpg?v=3" alt="Panic Salon, from the guide to the result" onerror="this.parentNode.classList.add('missing')" />
+            <div class="drop">How it plays<br />assets/play/crazy-salon-wide.jpg</div>
+          </div>
+          <div class="glinks">
+            <a class="main" href="https://belendali.github.io/hair-salon/" target="_blank">Demo ↗</a>
+            <a href="https://belendali.github.io/hair-salon/asset-library/" target="_blank">Assets ↗</a>
+            <a href="https://github.com/Belendali/hair-salon" target="_blank">GitHub ↗</a>
+            <a href="https://www.figma.com/design/QUBLPsojgC8Vom9a3KD2R9/TikTok-Effect-Game--Bella-Li-09152026?node-id=295656-48596&amp;t=obTdrpBNiDewiyfc-4" target="_blank">TT Effect Figma ↗</a>
+            <a href="https://belendali.github.io/hair-salon/?zones" target="_blank">Safe zones ↗</a>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  <div class="lb" id="lb" hidden><div class="lbphone" id="lbphone"><video id="lbvideo" playsinline preload="auto"></video></div><div class="lbhint"><b>Sound on</b> · tap anywhere to close</div></div>
 <script>
-(async () => {
-  const encPath = "../enc/play.json";
-  const f = document.getElementById("f"), inp = document.getElementById("p"), msg = document.getElementById("m");
-  const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
-  const data = await (await fetch(encPath + "?t=" + Date.now())).json();
-  async function keyFrom(pw) {
-    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
-    return crypto.subtle.deriveKey({ name: "PBKDF2", salt: b64(data.salt), iterations: 150000, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, true, ["decrypt"]);
-  }
-  async function open(key) {
-    const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(data.iv) }, key, b64(data.ct));
-    const html = new TextDecoder().decode(pt);
-    document.open(); document.write(html); document.close();
-  }
-  if (location.search.includes("logout")) localStorage.removeItem("tt-k");
-  const saved = localStorage.getItem("tt-k");
-  if (saved) { try { const key = await crypto.subtle.importKey("raw", b64(saved), { name: "AES-GCM" }, true, ["decrypt"]); await open(key); return; } catch (e) { localStorage.removeItem("tt-k"); } }
-  f.addEventListener("submit", async (e) => {
-    e.preventDefault(); msg.textContent = "…";
-    try {
-      const key = await keyFrom(inp.value);
-      const raw = new Uint8Array(await crypto.subtle.exportKey("raw", key));
-      await open(key);
-      localStorage.setItem("tt-k", btoa(String.fromCharCode(...raw)));
-    } catch (err) { f.classList.remove("bad"); void f.offsetWidth; f.classList.add("bad"); msg.textContent = "try again"; inp.select(); }
-  });
-})();
+  (function () {
+    // reveal each game as it scrolls in, and only play the recording that is on screen
+    const games = [...document.querySelectorAll('.game')];
+    const io = new IntersectionObserver((es) => { es.forEach((e) => { if (e.isIntersecting) e.target.classList.add('in'); const v = e.target.querySelector('video'); if (v && v.getAttribute('src')) { if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); } }); }, { threshold: 0.18 });
+    games.forEach((g) => io.observe(g));
+    // side-nav style current marker on the top chips
+    const toc = [...document.querySelectorAll('.toc a, .sidenav a:not(.top)')];
+    function spy() { const y = scrollY + innerHeight * 0.4; let cur = null; for (const g of games) if (g.getBoundingClientRect().top + scrollY <= y) cur = g; toc.forEach((a) => a.classList.toggle('cur', !!cur && a.getAttribute('href') === '#' + cur.id)); }
+    addEventListener('scroll', spy, { passive: true }); spy();
+    [...toc, document.querySelector('.sidenav a.top')].forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); const t = document.querySelector(a.getAttribute('href')); scrollTo({ top: Math.max(0, t.getBoundingClientRect().top + scrollY - 30), behavior: 'smooth' }); history.replaceState(null, '', a.getAttribute('href')); }));
+    // the phone follows the cursor a little
+    document.querySelectorAll('.left').forEach((col) => {
+      const ph = col.querySelector('.phone'); if (!ph) return;
+      col.addEventListener('pointermove', (e) => { const r = ph.getBoundingClientRect(); const dx = (e.clientX - (r.left + r.width / 2)) / r.width, dy = (e.clientY - (r.top + r.height / 2)) / r.height; ph.classList.add('tilting'); ph.style.transform = `translateY(-6px) rotateY(${dx * 10}deg) rotateX(${-dy * 8}deg)`; });
+      col.addEventListener('pointerleave', () => { ph.style.transform = ''; ph.classList.remove('tilting'); });
+    });
+  })();
+  (function () {
+    // tap a phone: the recording grows to the centre and plays from the start with sound; tap again (or Esc) to close
+    const lb = document.getElementById('lb'), box = document.getElementById('lbphone'), lv = document.getElementById('lbvideo');
+    let from = null;
+    function open(ph) {
+      const v = ph.querySelector('video'); if (!v || ph.classList.contains('empty') || v.style.display === 'none') return;
+      from = ph; v.pause();
+      lv.src = v.currentSrc || v.src; lv.currentTime = 0; lv.muted = false; lv.volume = 1;
+      lb.hidden = false; document.documentElement.style.overflow = 'hidden';
+      const a = ph.getBoundingClientRect(), b = box.getBoundingClientRect();
+      box.style.transition = 'none';
+      box.style.transform = `translate(${a.left + a.width / 2 - (b.left + b.width / 2)}px, ${a.top + a.height / 2 - (b.top + b.height / 2)}px) scale(${a.height / b.height})`;
+      void box.offsetWidth; box.style.transition = ''; box.style.transform = ''; lb.classList.add('on');
+      lv.play().catch(() => { lv.muted = true; lv.play().catch(() => {}); });
+    }
+    function close() {
+      if (lb.hidden) return; lv.pause(); lb.classList.remove('on');
+      if (from) { const a = from.getBoundingClientRect(), b = box.getBoundingClientRect(); box.style.transform = `translate(${a.left + a.width / 2 - (b.left + b.width / 2)}px, ${a.top + a.height / 2 - (b.top + b.height / 2)}px) scale(${a.height / b.height})`; }
+      setTimeout(() => { lb.hidden = true; box.style.transform = ''; lv.removeAttribute('src'); lv.load(); document.documentElement.style.overflow = ''; const v = from && from.querySelector('video'); if (v) v.play().catch(() => {}); from = null; }, 320);
+    }
+    document.querySelectorAll('.phone').forEach((ph) => ph.addEventListener('click', () => open(ph)));
+    lb.addEventListener('click', close);
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  })();
+  (function () {
+    const page = document.querySelector('.page'), games = [...document.querySelectorAll('.game')]; if (!games.length) return;
+    page.classList.add('focusing');
+    let hover = null, ticking = false;
+    const set = (g) => games.forEach((x) => x.classList.toggle('focus', x === g));
+    function pick() {
+      ticking = false;
+      if (hover) { set(hover); return; }
+      const mid = innerHeight / 2; let best = games[0], bd = Infinity;
+      for (const g of games) { const r = g.getBoundingClientRect(), d = Math.abs(r.top + r.height / 2 - mid); if (d < bd) { bd = d; best = g; } }
+      set(best);
+    }
+    const queue = () => { if (!ticking) { ticking = true; requestAnimationFrame(pick); } };
+    addEventListener('scroll', queue, { passive: true }); addEventListener('resize', queue);
+    games.forEach((g) => { g.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { hover = g; queue(); } }); g.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') { hover = null; queue(); } }); });
+    pick();
+  })();
+  document.querySelectorAll('.phone video').forEach((v) => { v.addEventListener('error', () => { v.parentNode.classList.add('empty'); v.style.display = 'none'; v.parentNode.insertAdjacentHTML('afterbegin', `<img class="poster" src="${v.poster}" alt="" />`); }); });
 </script>
 </body>
 </html>
