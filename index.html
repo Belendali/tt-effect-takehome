@@ -66,14 +66,17 @@
   .loopline { margin: 20px 0 0; font-size: 13.5px; color: var(--dim); }
   .loopline em { font-style: normal; color: var(--ink); }
   .hint { margin-top: 48px; font-family: var(--serif); font-size: 12.5px; letter-spacing: .16em; color: rgba(255,255,255,.25); text-transform: uppercase; }
-  @media (max-width: 900px) { .hub { width: calc(100% - 48px); } .hero-row { grid-template-columns: 1fr; } .hero-avatar { display: none; } .agenda, .lc-row { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) { .hub { width: calc(100% - 48px); } .hero-row { grid-template-columns: 1fr; } .agenda, .lc-row { grid-template-columns: 1fr; } }
   .tbd.done { color: var(--cyan); border-color: rgba(0,242,234,.45); }
   .tbd.open { color: var(--ink); border-color: rgba(255,255,255,.3); }
   @media (max-width: 900px) { .tracks { grid-template-columns: repeat(2, 1fr); row-gap: 14px; } }
   @media (max-width: 900px) {
     img { max-width: 100%; }
-    .hero-avatar { width: auto; max-width: 100%; }
+    /* the reel stays on phones, above the title */
+    .hero-avatar { display: block; width: 100%; max-width: 320px; margin: 0 auto; order: -1; }
     .hero-avatar img { max-width: 100%; height: auto; }
+    .hero-reel { margin-top: 8px; margin-bottom: -8px; }
+    .hub { padding-top: 96px; }
     .bg img { transform: none; }
   }
 </style>
