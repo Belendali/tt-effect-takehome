@@ -157,6 +157,12 @@
     .phone { width: 210px; }
     .ginfo h2 { font-size: 30px; }
     #lb { padding: 14px; }
+    /* on a phone the QR is pointless: one big Demo button instead */
+    .qr { display: none; }
+    .glinks { gap: 10px; }
+    .glinks a.main { flex: 1 1 100%; text-align: center; padding: 16px 18px; font-size: 13px; letter-spacing: .2em; color: #fff; background: var(--eh-red); border-color: var(--eh-red); }
+    .glinks a.main:hover { background: var(--eh-red); }
+    .glinks a:not(.main) { flex: 0 1 auto; }
   }
 </style>
 </head>
