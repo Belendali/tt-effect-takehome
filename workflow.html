@@ -389,8 +389,9 @@
   .bul li b { font-weight: 600; color: var(--accent); }
   /* phone: keep every block inside the screen */
   @media (max-width: 900px) {
-    .dirs { grid-template-columns: 1fr; }
-    .dir { width: 100%; }
+    .dirs { grid-template-columns: minmax(0, 1fr); }
+    .dir { min-width: 0; }
+    .wgames, .wgames.solo { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .topfade { max-width: 100%; }
     img { max-width: 100%; }
     .rules5 { grid-template-columns: 1fr 1fr; }
