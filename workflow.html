@@ -342,6 +342,16 @@
   .frames .evl { margin-top: 6px; gap: 10px; }
   .frames .evl a { font-size: 10px; }
   @media (max-width: 900px) { .frames { grid-template-columns: 1fr; } }
+  /* images lift and zoom a little on hover */
+  .ev:not(.q) { transition: transform .35s cubic-bezier(.22,1,.36,1), border-color .3s ease, box-shadow .3s ease; }
+  .ev:not(.q):hover { transform: translateY(-3px); border-color: rgba(255,255,255,.32); box-shadow: 0 18px 44px rgba(0,0,0,.5); }
+  .ev:not(.q) img { transition: transform .5s cubic-bezier(.22,1,.36,1); }
+  .ev:not(.q):hover img { transform: scale(1.04); }
+  .frames .fr:hover .ev { transform: translateY(-4px); }
+  .frames .fr:hover .ev img { transform: scale(1.05); }
+  .wgimg img { transition: transform .5s cubic-bezier(.22,1,.36,1), opacity .9s ease; }
+  .wg:hover .wgimg img { transform: scale(1.05); }
+  .dmc img, .trm img.cover { transition: transform .5s cubic-bezier(.22,1,.36,1); }
 </style>
 </head>
 <body>
