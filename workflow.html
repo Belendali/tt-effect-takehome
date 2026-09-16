@@ -579,28 +579,31 @@
       </div>
 
       <div class="tp" data-panel="3d">
-        <div class="beat"><div class="bn"><i>01</i><b>Idea → greybox → playability</b></div><div class="bb">
+        <div class="beat"><div class="bn"><i>01</i><b>Idea → PRD → 3D demo</b></div><div class="bb">
           <ul class="bul">
-            <li>Codex started from the Salon Panic concept: one chair, one client, face triggers.</li>
-            <li>The first pass had blocks and a sneeze timer, no models.</li>
+            <li>This game had the most moving parts, so it started with a written PRD instead of a one-line prompt.</li>
+            <li>Every client got a three-view sheet plus visual references, and Codex built the first 3D demo from them.</li>
+            <li>The first pass was blocks and a sneeze timer, played until the timing felt fair.</li>
           </ul>
-          <div class="ev q"><p>“Pluck greys, trim bangs, plant hair. Tap on the beat, lift before the sneeze. Every slip becomes a hairstyle. The client stays polite.”</p><small>The concept line from Step 01.</small></div>
+          <div class="frames"><div class="fr"><div class="ev"><img src="assets/flow/3d-ref-grandma.jpg" alt="Granny" /></div><b>Granny</b></div><div class="fr"><div class="ev"><img src="assets/flow/3d-ref-girl.jpg" alt="The girl" /></div><b>The girl</b></div><div class="fr"><div class="ev"><img src="assets/flow/3d-ref-man.jpg" alt="The gentleman" /></div><b>The gentleman</b></div></div>
         </div></div>
 
         <div class="beat"><div class="bn"><i>02</i><b>Art and audio</b></div><div class="bb">
           <ul class="bul">
-            <li>Three views first, then the models, then rounds of fixes on proportions and rigs.</li>
-            <li>Blender for the last mile — model fixes went through it, not through prompts.</li>
-            <li>Voices recorded, music from free libraries, the small cues synthesised in code.</li>
+            <li>To let the models carry emotion, each client got extra reference sheets: more poses, more expressions.</li>
+            <li>Codex modelled and rigged them in Blender from those sheets.</li>
+            <li>The rigs still needed hand fixing — proportions and weights were not precise enough on their own.</li>
+            <li>Voices recorded, music from free libraries, the small cues written in code.</li>
           </ul>
-          <div class="ev"><img src="assets/flow/3d-assets.jpg" alt="Panic Salon characters" /></div>
+          <div class="frames"><div class="fr"><div class="ev"><img src="assets/flow/3d-emo-grandma-happy.jpg" alt="Granny, pleased" /></div><b>Granny, pleased</b></div><div class="fr"><div class="ev"><img src="assets/flow/3d-emo-grandma-angry.jpg" alt="Granny, not pleased" /></div><b>Granny, not pleased</b></div><div class="fr"><div class="ev"><img src="assets/flow/3d-emo-man-angry.jpg" alt="The gentleman, angry" /></div><b>The gentleman, angry</b></div></div>
+          <div class="ev"><img src="assets/flow/3d-assets.jpg" alt="Panic Salon characters in the game" /></div>
         </div></div>
 
         <div class="beat"><div class="bn"><i>03</i><b>Integrate, spec, iterate</b></div><div class="bb">
           <ul class="bul">
-            <li>The client scene sits inside the core zone, lifted so head and hair stay clear of TikTok's UI.</li>
-            <li>A 3-2-1 with an empty chair, then the doorbell and the first client walks in.</li>
-            <li>Sneeze timing softened after friends kept getting caught.</li>
+            <li>The same Figma step as the 2D games: the TikTok Effect spec in, the game fitted to it.</li>
+            <li>Then a long tail of tuning — camera framing, sneeze timing, the count-in with the empty chair and the doorbell arrival.</li>
+            <li>The label in the corner tells the story: the game ships as Demo 35.</li>
           </ul>
           <div class="frames one"><div class="fr"><div class="ev"><img src="assets/flow/tt-salon.jpg" alt="Panic Salon in the TikTok Effect frame" /></div><b>Panic Salon</b><div class="evl"><a href="https://www.figma.com/design/QUBLPsojgC8Vom9a3KD2R9/TikTok-Effect-Game--Bella-Li-09152026?node-id=295656-48596&amp;t=obTdrpBNiDewiyfc-4" target="_blank">Figma ↗</a><a href="https://belendali.github.io/hair-salon/?zones" target="_blank">Safe zones ↗</a></div></div></div>
         </div></div>
@@ -614,6 +617,7 @@
           <div class="evl"><a href="https://belendali.github.io/hair-salon/asset-library/" target="_blank">Asset library ↗</a><a href="https://github.com/Belendali/hair-salon" target="_blank">Source ↗</a></div>
         </div></div>
       </div>
+
       <div class="chips" style="margin-top:44px"><span>Skill so far · idea judge</span><span>Next · asset style</span><span>Next · safe-zone check</span></div>
     </section>
 
