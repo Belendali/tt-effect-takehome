@@ -370,6 +370,22 @@
   @media (max-width: 900px) { .frames.libs { margin-left: 0; } }
   .frames.libs .ev { aspect-ratio: 5 / 4; }
   .frames.libs .ev img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+  .rules5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 18px; }
+  .rules5 > div { background: #0c0c11; border: 1px solid var(--line); border-radius: 14px; padding: 15px 14px 13px; }
+  .rules5 b { display: block; font-family: var(--serif); font-weight: 500; font-size: 14px; line-height: 1.25; margin-bottom: 7px; }
+  .rules5 span { display: block; font-size: 12px; line-height: 1.5; color: var(--dim); }
+  .rules5 em { font-style: normal; color: var(--ink); }
+  .deliver > div { text-decoration: none; color: var(--ink); background: #0c0c11; border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 6px; }
+  .deliver > div.hl { border-color: rgba(255,0,80,.5); background: #13131a; }
+  .deliver > div.hl i { color: var(--accent); }
+  .next2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; align-items: start; }
+  .next2 > div { background: #0c0c11; border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px 18px; }
+  .next2 i { display: block; font-style: normal; font-family: var(--serif); font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--faint); }
+  .next2 h4 { margin: 6px 0 12px; font-family: var(--serif); font-weight: 500; font-size: 19px; }
+  .next2 .bul { padding-left: 16px; }
+  .next2 .bul li { font-size: 13.5px; }
+  .next2 .body.note { margin-top: 10px; font-size: 12.5px; }
+  @media (max-width: 900px) { .rules5 { grid-template-columns: 1fr 1fr; } .next2 { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -627,31 +643,43 @@
       <p class="lede" style="margin-top:14px;max-width:760px">Five days, four games. The rules worth keeping, who did what, and what it would take for someone else to run this.</p>
 
       <div class="why">Rules worth keeping</div>
-      <ul class="bul">
-        <li><em>Play before you draw.</em> Every game started as a greybox with real tracking and no art. The art began only once the input felt right.</li>
-        <li><em>Re-skinning beats inventing.</em> Nod the Beat reused Wink Wink's engine with a new input and a new theme, which paid for a third game.</li>
-        <li><em>Tune detection on a real phone.</em> Judge windows, quick-flick triggers and re-arm thresholds all moved after play tests, never from numbers alone.</li>
-        <li><em>Read the spec at the start.</em> The safe zones went in while building, and every game keeps a <em>?zones</em> overlay so it can check itself.</li>
-        <li><em>One link, forever.</em> The QR code never changes; every scan opens the current build.</li>
-      </ul>
+      <div class="rules5">
+        <div><b>Play before you draw</b><span>Greybox first. Art starts once the input feels right.</span></div>
+        <div><b>Re-skin, don't reinvent</b><span>One engine, a new input and a new theme.</span></div>
+        <div><b>Tune on a real phone</b><span>Windows and thresholds move after play tests.</span></div>
+        <div><b>Spec in at the start</b><span>Safe zones while building, <em>?zones</em> to self-check.</span></div>
+        <div><b>One link, forever</b><span>The QR never changes; every scan is current.</span></div>
+      </div>
 
       <div class="why" style="margin-top:44px">Who did what</div>
       <div class="deliver">
-        <a href="#s3"><i>Build · previews</i><b>Claude Code</b><span>Greybox, game logic, integration, spec alignment, asset libraries.</span></a>
-        <a href="#s3"><i>Art · models</i><b>Codex</b><span>2D sprites from one reference, 3D characters from three views.</span></a>
-        <a href="#s3"><i>Models</i><b>Blender</b><span>The last mile on rigs and proportions, where prompts stopped helping.</span></a>
-        <a href="#s3"><i>Spec</i><b>Figma</b><span>Safe-zone spec in, real-look frames and assets out.</span></a>
-        <a href="#s2"><i>Tracking · sound</i><b>MediaPipe · WebAudio</b><span>Face and voice in the browser, music and cues written in code.</span></a>
-        <a href="#s1"><i>Direction</i><b>Me</b><span>Choosing what to build, judging how it feels, cutting what is not fun.</span></a>
+        <div><i>Build · previews</i><b>Claude Code</b><span>Greybox, game logic, integration, spec alignment, asset libraries.</span></div>
+        <div><i>Art · models</i><b>Codex</b><span>2D sprites from one reference, 3D characters from three views.</span></div>
+        <div><i>Models</i><b>Blender</b><span>The last mile on rigs and proportions, where prompts stopped helping.</span></div>
+        <div><i>Spec</i><b>Figma</b><span>Safe-zone spec in, real-look frames and assets out.</span></div>
+        <div><i>Tracking · sound</i><b>MediaPipe · WebAudio</b><span>Face and voice in the browser, music and cues written in code.</span></div>
+        <div class="hl"><i>Direction</i><b>Me</b><span>Deciding what to build, setting up the workflow, judging and twisting each round, holding the line on taste and detail.</span></div>
       </div>
 
-      <div class="why" style="margin-top:44px">Next: make it remixable</div>
-      <ul class="bul">
-        <li><em>A re-skin checklist.</em> Which files and which constants to touch for a new theme: colours, character art, judge windows, round length.</li>
-        <li><em>One config block per game.</em> BPM, windows, duration and detection thresholds in a single place, so pace and difficulty are numbers rather than code edits.</li>
-        <li><em>A starter from the greybox.</em> Tracking, judging and a result screen already wired, so the next game starts at step three.</li>
-      </ul>
-      <p class="body note" style="margin-top:14px">These three are the next step, not something shipped this week. The skill built so far is the idea judge; asset style and the safe-zone check are still to come.</p>
+      <div class="why" style="margin-top:44px">What comes next</div>
+      <div class="next2">
+        <div>
+          <i>Inside</i><h4>Faster work, more room to design</h4>
+          <ul class="bul">
+            <li>An agent that watches the numbers daily and reports what is trending and where to go next.</li>
+            <li>Automatic re-skinning for loops that have already proved themselves.</li>
+            <li>Working out how AI fits into real game production, so Effect House and the designer, PM and developer split improve together.</li>
+          </ul>
+          <p class="body note">The third one needs a seat inside the team to learn properly.</p>
+        </div>
+        <div>
+          <i>Outside</i><h4>More people making games</h4>
+          <ul class="bul">
+            <li>Turn proven hits into a skill, so a remix lands reliably instead of by luck.</li>
+            <li>Work out what makes people want to build templates and content, and reward it.</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
   </div>
