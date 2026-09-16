@@ -5,142 +5,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
 <title>TikTok Effect Game Test · Bella Li</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap" rel="stylesheet" />
 <style>
-  :root { --accent: var(--eh-red); --cyan: var(--eh-cyan); }
-  html, body { height: auto; overflow: visible; }
-  .bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
-  .bg img { width: 100%; height: 100%; object-fit: cover; object-position: center var(--bg-posy, 40%); opacity: var(--bg-op, .5); filter: saturate(.95); transform: scale(1.03); }
-  .bg::after { content: ""; position: absolute; inset: 0; background: radial-gradient(55% 50% at 38% 40%, rgba(5,5,8,.45) 0%, rgba(5,5,8,.2) 60%, rgba(5,5,8,0) 100%), linear-gradient(180deg, rgba(5,5,8,.35) 0%, rgba(5,5,8,.1) 45%, rgba(5,5,8,.9) 100%); }
-
-  .hub .rv { opacity: 1; transform: none; }
-  .hub { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; width: min(1080px, calc(100% - 128px)); margin: 0 auto; position: relative; z-index: 2; padding: 84px 0 96px; }
-  .hero-row { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
-  .hero-reel { aspect-ratio: 1; position: relative; margin-top: 36px; margin-bottom: -40px; }
-  .hero-reel video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0; transition: opacity .9s ease; }
-  .hero-reel video.on { opacity: 1; }
-  .hero-avatar { width: 380px; margin-right: 0; -webkit-mask-image: radial-gradient(closest-side, #000 58%, transparent 96%); mask-image: radial-gradient(closest-side, #000 58%, transparent 96%); animation: bob 5.5s ease-in-out infinite; }
-  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-  h1 { max-width: none; font-size: clamp(40px, 4.4vw, 70px); }
-  h1 .main-line { display: block; white-space: nowrap; }
-  h1 .sub-line { display: block; font-size: 0.62em; color: rgba(255,255,255,0.88); margin-top: 6px; }
-  .lede { max-width: 700px; }
-  .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
-  .meta span { font-family: var(--serif); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; background: #0c0c11; }
-  .meta span b { color: var(--ink); font-weight: 500; }
-
-  /* three deliverables */
-  .sec-label { font-family: var(--serif); font-size: 12.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--faint); margin: 24px 0 18px; }
-  .agenda { display: grid; grid-template-columns: 1.45fr 1fr; gap: 16px; }
-  .agenda a { text-decoration: none; color: var(--ink); background: #0c0c11; border: 1px solid var(--line); border-radius: 18px; padding: 28px 28px 24px; min-height: 260px; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: transform .3s ease, border-color .3s ease, background .3s ease; }
-  .agenda a:hover { transform: translateY(-4px); background: #13131a; }
-  .agenda a.a1:hover { border-color: rgba(255,0,80,.55); }
-  .agenda a.a2:hover { border-color: rgba(0,242,234,.5); }
-  .agenda a.a3:hover { border-color: rgba(139,124,255,.5); }
-  .agenda .no { font-family: var(--serif); font-size: 13px; letter-spacing: .28em; color: var(--faint); }
-  .agenda h3 { font-family: var(--serif); font-weight: 500; font-size: 26px; margin: auto 0 8px; letter-spacing: -.01em; line-height: 1.15; }
-  .a1 h3 span { color: var(--eh-red); } .a2 h3 span { color: var(--cyan); } .a3 h3 span { color: var(--core); }
-  .agenda .sub { font-size: 14px; color: var(--dim); line-height: 1.55; max-width: 360px; }
-  .tracks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 4px; }
-  .tracks > div { border-left: 1px solid var(--line); padding-left: 10px; }
-  .tracks i { display: block; font-style: normal; font-family: var(--serif); font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
-  .tracks b { display: block; font-family: var(--serif); font-weight: 500; font-size: 14px; color: var(--dim); margin-top: 2px; }
-  .agenda .foot { margin-top: 18px; font-family: var(--serif); font-size: 12px; letter-spacing: .2em; color: var(--faint); text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
-  .tbd { font-family: var(--serif); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: #ffb54a; border: 1px solid rgba(255,181,74,.45); border-radius: 999px; padding: 3px 8px; }
-  .a1 .qr { position: absolute; right: 22px; top: 22px; width: 92px; height: 92px; border-radius: 12px; background: repeating-conic-gradient(rgba(255,255,255,.08) 0 25%, transparent 0 50%) 0 0/16px 16px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 9px; letter-spacing: .2em; color: var(--faint); text-align: center; }
-
-  /* AI in the loop — one block */
-  .loopcard { display: block; text-decoration: none; color: var(--ink); margin-top: 16px; background: #0c0c11; border: 1px dashed rgba(255,255,255,.2); border-radius: 18px; padding: 26px 28px 22px; transition: transform .3s ease, border-color .3s ease, background .3s ease; }
-  .loopcard:hover { transform: translateY(-3px); border-style: solid; border-color: rgba(255,255,255,.32); background: #13131a; }
-  .lc-head { display: flex; align-items: center; gap: 16px; }
-  .lc-head .no { font-family: var(--serif); font-size: 13px; letter-spacing: .28em; color: var(--faint); }
-  .lc-head h3 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: 26px; letter-spacing: -.01em; }
-  .lc-head .tbd { margin-left: auto; }
-  .lc-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 20px; }
-  .lc-row > div { border-left: 1px solid var(--line); padding-left: 16px; }
-  .lc-row i { display: block; font-style: normal; font-family: var(--serif); font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--faint); margin-bottom: 4px; }
-  .lc-row b { display: block; font-family: var(--serif); font-weight: 500; font-size: 17px; color: var(--ink); }
-  .lc-row span { display: block; font-size: 12.5px; color: var(--dim); margin-top: 3px; }
-  .loopline { margin: 20px 0 0; font-size: 13.5px; color: var(--dim); }
-  .loopline em { font-style: normal; color: var(--ink); }
-  .hint { margin-top: 48px; font-family: var(--serif); font-size: 12.5px; letter-spacing: .16em; color: rgba(255,255,255,.25); text-transform: uppercase; }
-  @media (max-width: 900px) { .hub { width: calc(100% - 48px); } .hero-row { grid-template-columns: 1fr; } .agenda, .lc-row { grid-template-columns: 1fr; } }
-  .tbd.done { color: var(--cyan); border-color: rgba(0,242,234,.45); }
-  .tbd.open { color: var(--ink); border-color: rgba(255,255,255,.3); }
-  @media (max-width: 900px) { .tracks { grid-template-columns: repeat(2, 1fr); row-gap: 14px; } }
-  @media (max-width: 900px) {
-    img { max-width: 100%; }
-    /* the reel stays on phones, above the title */
-    .hero-avatar { display: block; width: 100%; max-width: 320px; margin: 0 auto; order: -1; }
-    .hero-avatar img { max-width: 100%; height: auto; }
-    .hero-reel { margin-top: 8px; margin-bottom: -8px; }
-    .hub { padding-top: 96px; }
-    .bg img { transform: none; }
-  }
+  html, body { height: 100%; margin: 0; background: #08080c; color: #fff; font-family: "Jost", system-ui, sans-serif; }
+  .gate { height: 100%; display: flex; align-items: center; justify-content: center; }
+  form { display: flex; flex-direction: column; align-items: center; gap: 14px; opacity: 0; animation: in .5s ease-out .15s forwards; }
+  @keyframes in { to { opacity: 1; } }
+  .k { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: rgba(255,255,255,.35); }
+  input { font: inherit; font-size: 16px; letter-spacing: .12em; text-align: center; width: 260px; padding: 12px 16px; color: #fff; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.16); border-radius: 999px; outline: none; transition: border-color .2s; }
+  input:focus { border-color: rgba(255,0,80,.7); }
+  form.bad input { border-color: #ff5c7a; animation: shake .3s; }
+  @keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  .m { font-size: 12px; color: rgba(255,255,255,.35); letter-spacing: .06em; min-height: 16px; }
 </style>
 </head>
 <body>
-  <div class="bg"><img src="assets/bg-tunnel.jpg" alt="" /></div>
-  <div class="hub">
-    <div class="hero-row">
-      <div>
-        <div class="eyebrow rv in">TikTok Effect · Game Test</div>
-        <h1 class="rv in"><span class="main-line">TikTok Effect Game,</span><span class="sub-line">built with AI.</span></h1>
-        <p class="lede rv in" style="margin-top:22px">Four playable effects, and the workflow that made them.</p>
-        <div class="meta rv in">
-          <span>Sep <b>11 – 15, 2026</b></span>
-          <span>By <b>Bella Li</b></span>
-        </div>
-      </div>
-      <div class="hero-avatar hero-reel"><video class="rv0" muted playsinline preload="auto"></video><video class="rv1" muted playsinline preload="auto"></video></div>
-    </div>
-
-    <div class="sec-label">Deliverables</div>
-    <div class="agenda">
-      <a class="a1" href="play/">
-        <span class="no">01</span>
-        <h3>Play the effects<br /><span>Four games, four inputs</span></h3>
-        <div class="tracks">
-          <div><i>Head · Voice</i><b>Nod the Beat</b></div>
-          <div><i>Eyes</i><b>Wink Wink</b></div>
-          <div><i>Voice</i><b>Ah! Jump</b></div>
-          <div><i>Tap · Drag</i><b>Panic Salon</b></div>
-        </div>
-        <div class="foot"><span>Mobile web · No install</span><span class="tbd done">Live</span></div>
-      </a>
-      <a class="a2" href="workflow.html">
-        <span class="no">02</span>
-        <h3>Workflow<br /><span>Brief to live demo</span></h3>
-        <div class="sub">How AI carried each game through prototype, assets, spec, and playtesting, with a 2D and a 3D build compared side by side.</div>
-        <div class="foot"><span>Case study</span><span class="tbd open">Read</span></div>
-      </a>
-    </div>
-  </div>
-
+<div class="gate"><form id="f" autocomplete="off"><div class="k">Effect Platform Test</div><input id="p" type="password" placeholder="password" autofocus /><div class="m" id="m"></div></form></div>
 <script>
-  (function () {
-    const clips = ["assets/hero-flower.mp4", "assets/hero-frog.mp4", "assets/hero-meat.mp4"];
-    const vs = [document.querySelector(".hero-reel .rv0"), document.querySelector(".hero-reel .rv1")];
-    let i = 0, cur = 0;
-    function load(el, idx) { return new Promise((res) => { el.src = clips[idx % clips.length]; el.load(); el.addEventListener("canplaythrough", res, { once: true }); setTimeout(res, 2500); }); }
-    async function start() {
-      await load(vs[0], 0); vs[0].currentTime = 0; vs[0].play().catch(() => {}); vs[0].classList.add("on");
-      load(vs[1], 1);
-      vs.forEach((el) => el.addEventListener("timeupdate", () => {
-        if (el !== vs[cur] || !el.duration) return;
-        if (el.duration - el.currentTime < 0.9 && !el.dataset.switching) { el.dataset.switching = "1"; swap(); }
-      }));
-    }
-    function swap() {
-      const next = vs[1 - cur]; const prev = vs[cur];
-      next.currentTime = 0; next.play().catch(() => {}); next.classList.add("on"); prev.classList.remove("on");
-      cur = 1 - cur; i++;
-      setTimeout(() => { prev.pause(); delete prev.dataset.switching; load(prev, i + 1); }, 1000);
-    }
-    start();
-  })();
+(async () => {
+  const encPath = "enc/index.json";
+  const f = document.getElementById("f"), inp = document.getElementById("p"), msg = document.getElementById("m");
+  const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  const data = await (await fetch(encPath + "?t=" + Date.now())).json();
+  async function keyFrom(pw) {
+    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+    return crypto.subtle.deriveKey({ name: "PBKDF2", salt: b64(data.salt), iterations: 150000, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, true, ["decrypt"]);
+  }
+  async function open(key) {
+    const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(data.iv) }, key, b64(data.ct));
+    const html = new TextDecoder().decode(pt);
+    document.open(); document.write(html); document.close();
+  }
+  if (location.search.includes("logout")) localStorage.removeItem("tt-k");
+  const saved = localStorage.getItem("tt-k");
+  if (saved) { try { const key = await crypto.subtle.importKey("raw", b64(saved), { name: "AES-GCM" }, true, ["decrypt"]); await open(key); return; } catch (e) { localStorage.removeItem("tt-k"); } }
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault(); msg.textContent = "…";
+    try {
+      const key = await keyFrom(inp.value);
+      const raw = new Uint8Array(await crypto.subtle.exportKey("raw", key));
+      await open(key);
+      localStorage.setItem("tt-k", btoa(String.fromCharCode(...raw)));
+    } catch (err) { f.classList.remove("bad"); void f.offsetWidth; f.classList.add("bad"); msg.textContent = "try again"; inp.select(); }
+  });
+})();
 </script>
 </body>
 </html>
