@@ -365,6 +365,9 @@
   #s3 .bn { position: relative; }
   #s3 .bn::before { content: ""; position: absolute; left: -24px; top: -46px; height: 34px; border-left: 1px dashed rgba(255,255,255,.22); }
   #s3 .beat:first-of-type .bn::before { display: none; }
+  /* the three library shots share one height, so the captions line up */
+  .frames.libs .ev { aspect-ratio: 5 / 4; }
+  .frames.libs .ev img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
 </style>
 </head>
 <body>
@@ -569,7 +572,7 @@
             <li>One public link per game, each with its own asset library: files, rules and a kit to download.</li>
             <li>The QR code always opens the latest build — no new link to hand out.</li>
           </ul>
-          <div class="frames"><div class="fr"><div class="ev"><img src="assets/flow/2d-library-wink.jpg" alt="Wink Wink asset library" /></div><b>Wink Wink</b><div class="evl"><a href="https://belendali.github.io/wink-wink/asset-library/" target="_blank">Asset library ↗</a></div></div><div class="fr"><div class="ev"><img src="assets/flow/2d-library.jpg" alt="Nod the Beat asset library" /></div><b>Nod the Beat</b><div class="evl"><a href="https://belendali.github.io/wink-dj/asset-library/" target="_blank">Asset library ↗</a></div></div><div class="fr"><div class="ev"><img src="assets/flow/2d-library-jump.jpg" alt="Ah! Jump asset library" /></div><b>Ah! Jump</b><div class="evl"><a href="https://belendali.github.io/ah-and-jump/asset-library/" target="_blank">Asset library ↗</a></div></div></div>
+          <div class="frames libs"><div class="fr"><div class="ev"><img src="assets/flow/2d-library-wink.jpg" alt="Wink Wink asset library" /></div><b>Wink Wink</b><div class="evl"><a href="https://belendali.github.io/wink-wink/asset-library/" target="_blank">Asset library ↗</a></div></div><div class="fr"><div class="ev"><img src="assets/flow/2d-library.jpg" alt="Nod the Beat asset library" /></div><b>Nod the Beat</b><div class="evl"><a href="https://belendali.github.io/wink-dj/asset-library/" target="_blank">Asset library ↗</a></div></div><div class="fr"><div class="ev"><img src="assets/flow/2d-library-jump.jpg" alt="Ah! Jump asset library" /></div><b>Ah! Jump</b><div class="evl"><a href="https://belendali.github.io/ah-and-jump/asset-library/" target="_blank">Asset library ↗</a></div></div></div>
         </div></div>
       </div>
 
