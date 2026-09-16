@@ -359,6 +359,12 @@
   .lb img { max-width: 94vw; max-height: 92vh; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.6); display: block; }
   .lb .close { position: absolute; top: 18px; right: 22px; font-family: var(--serif); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.6); }
   @keyframes lbin { from { opacity: 0; } to { opacity: 1; } }
+  /* step 03 reads as one slab */
+  section.blk#s3 { margin-top: 140px; padding: 52px 40px 46px; background: linear-gradient(180deg, #0e0e15 0%, #0a0a10 100%); border: 1px solid rgba(255,255,255,.10); border-radius: 26px; }
+  #s3 .beat { border-top-color: rgba(255,255,255,.09); }
+  #s3 .beat:first-of-type { border-top: 0; padding-top: 10px; margin-top: 26px; }
+  #s3 .chips { margin-top: 38px !important; }
+  @media (max-width: 900px) { section.blk#s3 { padding: 32px 20px 28px; border-radius: 18px; margin-top: 90px; } }
 </style>
 </head>
 <body>
@@ -384,7 +390,7 @@
     <div class="gap"></div>
     <a href="#s1">01 Ideas</a>
     <a href="#s2">02 Decision</a>
-    <a href="#s3">03 Workflow</a>
+    <a href="#s3">03 Execution</a>
     <a href="#s4">04 Notes</a>
   </nav>
 
@@ -516,7 +522,7 @@
 
     <section class="blk flow" id="s3">
       <div class="sl amber">Step 03</div>
-      <h2>Workflow: one loop, two runs.</h2>
+      <h2>Execution: one loop, two runs.</h2>
       <p class="lede" style="margin-top:14px;max-width:760px">Same four steps both times. The 2D games share one engine; the 3D one runs the same loop with models.</p>
       <div class="tabs" role="tablist">
         <button class="tab on" data-tab="2d" role="tab">2D · Wink Wink, Nod the Beat, Ah! Jump</button>
