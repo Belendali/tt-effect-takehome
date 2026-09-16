@@ -403,6 +403,9 @@
     .ev, .ev.small, .bul, .blk p.body, .lede { max-width: 100%; }
     .lb { padding: 14px; }
   }
+  /* next step stands on its own at the end */
+  section.blk#s5 { padding-top: 200px; }
+  @media (max-width: 900px) { section.blk#s5 { padding-top: 120px; } }
 </style>
 </head>
 <body>
@@ -430,7 +433,8 @@
     <a href="#s2">02 Decision</a>
     <a href="#s3">03 Execution</a>
     <a href="#s4">04 Notes</a>
-    <a href="#s5">05 Next step</a>
+    <div class="gap"></div>
+    <a href="#s5">Next step</a>
   </nav>
 
   <div class="case">
@@ -680,7 +684,6 @@
     </section>
 
     <section class="blk" id="s5">
-      <div class="sl core">Step 05</div>
       <h2>Next step.</h2>
       <p class="lede" style="margin-top:14px;max-width:760px">Two directions: make the work faster inside, and open the making up outside.</p>
       <div class="next2">
