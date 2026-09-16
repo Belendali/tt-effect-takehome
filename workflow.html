@@ -412,6 +412,14 @@
     /* the back button must not sit on the text it scrolls over */
     .back { width: 38px; height: 38px; left: 12px; top: 12px; font-size: 16px; background: rgba(8,8,12,.88); }
   }
+  /* the closing line-up, with a little confetti when you reach it */
+  .closing { position: relative; margin: 120px 0 0; padding-bottom: 60px; }
+  .closing img { display: block; width: 100%; height: auto; }
+  .confetti { position: absolute; left: 0; right: 0; top: -80px; bottom: 0; overflow: hidden; pointer-events: none; z-index: 3; }
+  .confetti i { position: absolute; top: 0; width: 8px; border-radius: 2px; opacity: 0; animation: fall var(--dur, 2.4s) cubic-bezier(.22,.7,.4,1) forwards; animation-delay: var(--delay, 0s); }
+  @keyframes fall { 0% { opacity: 0; transform: translate3d(0,-30px,0) rotate(0deg); } 12% { opacity: 1; } 100% { opacity: 0; transform: translate3d(var(--drift, 0px), var(--dist, 420px), 0) rotate(var(--spin, 540deg)); } }
+  @media (max-width: 900px) { .closing { margin-top: 80px; } }
+  @media (prefers-reduced-motion: reduce) { .confetti { display: none; } }
 </style>
 </head>
 <body>
@@ -712,6 +720,11 @@
       </div>
     </section>
 
+    <div class="closing" id="closing">
+      <div class="confetti" id="confetti" aria-hidden="true"></div>
+      <img src="assets/flow/closing.webp" alt="The cast of the four games, together" />
+    </div>
+
   </div>
   <div class="lb" id="lb" hidden><span class="close">Click to close</span><img id="lbimg" alt="" /></div>
 <script>
@@ -752,6 +765,30 @@
       if (!lb.hidden) close();
     });
     addEventListener('keydown', (e) => { if (e.key === 'Escape' && !lb.hidden) close(); });
+  })();
+  (function () {
+    const host = document.getElementById('confetti'), closing = document.getElementById('closing');
+    if (!host || !closing || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const colours = ['#ff0050', '#00f2ea', '#ffe052', '#ffffff', '#ff8fb1', '#b58cff'];
+    let busy = false;
+    function burst() {
+      if (busy) return; busy = true; host.innerHTML = '';
+      const n = innerWidth < 700 ? 34 : 56;
+      for (let i = 0; i < n; i++) {
+        const p = document.createElement('i');
+        p.style.left = (Math.random() * 100).toFixed(2) + '%';
+        p.style.background = colours[i % colours.length];
+        p.style.height = (10 + Math.random() * 10).toFixed(0) + 'px';
+        p.style.setProperty('--delay', (Math.random() * 0.6).toFixed(2) + 's');
+        p.style.setProperty('--dur', (1.9 + Math.random() * 1.2).toFixed(2) + 's');
+        p.style.setProperty('--dist', Math.round(closing.offsetHeight + 120 + Math.random() * 140) + 'px');
+        p.style.setProperty('--drift', Math.round((Math.random() - 0.5) * 160) + 'px');
+        p.style.setProperty('--spin', Math.round(360 + Math.random() * 540) + 'deg');
+        host.append(p);
+      }
+      setTimeout(() => { host.innerHTML = ''; busy = false; }, 3600);
+    }
+    new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) burst(); }, { threshold: 0.3 }).observe(closing);
   })();
 </script>
 </body>
