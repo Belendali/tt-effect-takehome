@@ -16,17 +16,37 @@
   input:focus { border-color: rgba(255,0,80,.7); }
   form.bad input { border-color: #ff5c7a; animation: shake .3s; }
   @keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  .go { font: inherit; font-size: 14px; letter-spacing: .12em; width: 260px; padding: 11px 16px; color: #fff; background: #fe2c55; border: 0; border-radius: 999px; }
   .m { font-size: 12px; color: rgba(255,255,255,.35); letter-spacing: .06em; min-height: 16px; }
 </style>
 </head>
 <body>
-<div class="gate"><form id="f" autocomplete="off"><div class="k">Effect Platform Test</div><input id="p" type="password" placeholder="password" autofocus /><div class="m" id="m"></div></form></div>
+<div class="gate"><form id="f" autocomplete="off" onsubmit="return false"><div class="k">Effect Platform Test</div><input id="p" type="password" placeholder="password" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" /><button class="go" type="submit">Enter</button><div class="m" id="m"></div></form></div>
 <script>
 (async () => {
   const encPath = "enc/index.json";
   const f = document.getElementById("f"), inp = document.getElementById("p"), msg = document.getElementById("m");
   const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
-  const data = await (await fetch(encPath + "?t=" + Date.now())).json();
+  let data = null;
+  async function load() { if (!data) data = await (await fetch(encPath + "?t=" + Date.now(), { cache: "no-store" })).json(); return data; }
+  // listen before any await so an early Enter never reloads the page
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault(); inp.blur(); msg.textContent = "…";
+    if (!window.crypto || !crypto.subtle) { msg.textContent = "open this link in Safari or Chrome"; return; }
+    try { await load(); } catch (e2) { msg.textContent = "loading failed, refresh the page"; return; }
+    // phones autocapitalise and add spaces: try what was typed, then trimmed and lowercased
+    const typed = inp.value, tries = [...new Set([typed, typed.trim(), typed.trim().toLowerCase()])];
+    for (const pw of tries) {
+      let key, pt;
+      try { key = await keyFrom(pw); pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(data.iv) }, key, b64(data.ct)); } catch (err) { continue; }
+      try { const raw = new Uint8Array(await crypto.subtle.exportKey("raw", key)); localStorage.setItem("tt-k", btoa(String.fromCharCode(...raw))); } catch (err) {}
+      const html = new TextDecoder().decode(pt);
+      document.open(); document.write(html); document.close();
+      return;
+    }
+    { f.classList.remove("bad"); void f.offsetWidth; f.classList.add("bad"); msg.textContent = "try again"; inp.select(); }
+  });
+  try { await load(); } catch (e) { msg.textContent = "loading failed, refresh the page"; }
   async function keyFrom(pw) {
     const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
     return crypto.subtle.deriveKey({ name: "PBKDF2", salt: b64(data.salt), iterations: 150000, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, true, ["decrypt"]);
@@ -39,15 +59,6 @@
   if (location.search.includes("logout")) localStorage.removeItem("tt-k");
   const saved = localStorage.getItem("tt-k");
   if (saved) { try { const key = await crypto.subtle.importKey("raw", b64(saved), { name: "AES-GCM" }, true, ["decrypt"]); await open(key); return; } catch (e) { localStorage.removeItem("tt-k"); } }
-  f.addEventListener("submit", async (e) => {
-    e.preventDefault(); msg.textContent = "…";
-    try {
-      const key = await keyFrom(inp.value);
-      const raw = new Uint8Array(await crypto.subtle.exportKey("raw", key));
-      await open(key);
-      localStorage.setItem("tt-k", btoa(String.fromCharCode(...raw)));
-    } catch (err) { f.classList.remove("bad"); void f.offsetWidth; f.classList.add("bad"); msg.textContent = "try again"; inp.select(); }
-  });
 })();
 </script>
 </body>
